@@ -1,6 +1,8 @@
+import 'package:bcrypt/bcrypt.dart';
 import 'package:blogger_app/core/routes/app_route_constants.dart';
 import 'package:blogger_app/src/controllers/auth_controller/auth_controller.dart';
 import 'package:blogger_app/src/controllers/sign_in_up_controller/sign_in_up_controller.dart';
+import 'package:blogger_app/src/models/UserModel/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoastalert/FlutterToastAlert.dart';
 import 'package:get/get.dart';
@@ -174,13 +176,27 @@ class SignUpScreen extends StatelessWidget {
                                               .validPhoneNo.value &&
                                           signInAndUpController
                                               .validUsername.value) {
+                                        final hashedPass = BCrypt.hashpw(
+                                            "${signInAndUpController.password.text.trim()}",
+                                            BCrypt.gensalt());
                                         authController
                                             .createUserWithEmailAndPass(
-                                                signInAndUpController.email.text
-                                                    .trim(),
-                                                signInAndUpController
-                                                    .password.text
-                                                    .trim())
+                                          signInAndUpController.email.text
+                                              .trim(),
+                                          signInAndUpController.password.text
+                                              .trim(),
+                                          UserModel(
+                                              email: signInAndUpController
+                                                  .email.text
+                                                  .trim(),
+                                              username: signInAndUpController
+                                                  .name.text
+                                                  .trim(),
+                                              phoneNo: signInAndUpController
+                                                  .phoneNo.text
+                                                  .trim(),
+                                              hashPass: hashedPass),
+                                        )
                                             .then((data) {
                                           if (data == null) {
                                             print("aage nhi ");

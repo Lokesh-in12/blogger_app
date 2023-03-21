@@ -33,13 +33,4 @@ class SignInAndUpController extends GetxController {
   void checkPhoneNo(String phoneNo) {
     phoneNo.length > 9 ? validPhoneNo.value = true : validPhoneNo.value = false;
   }
-
-  // void confirmValidation() {
-  //   validEmail.value &&
-  //           validPass.value &&
-  //           validPhoneNo.value &&
-  //           validUsername.value
-  //       ? validated.value = true
-  //       : validated.value = true;
-  // }
 }

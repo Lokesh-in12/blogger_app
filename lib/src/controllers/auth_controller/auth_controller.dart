@@ -1,6 +1,8 @@
 import 'package:blogger_app/core/exceptions/firebase_auth_exceptions.dart';
+import 'package:blogger_app/src/models/UserModel/user_model.dart';
 import 'package:blogger_app/src/views/screens/homescreen/home_screen.dart';
 import 'package:blogger_app/src/views/screens/welcomeScreen/welcome_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoastalert/FlutterToastAlert.dart';
@@ -10,6 +12,7 @@ import 'package:go_router/go_router.dart';
 class AuthController extends GetxController {
   //variables
   final _auth = FirebaseAuth.instance;
+  final _dbRef = FirebaseFirestore.instance;
   late final Rx<User?> firebaseUser;
   RxBool isLoggedIn = false.obs;
 
@@ -30,11 +33,13 @@ class AuthController extends GetxController {
   }
 
   Future<bool?> createUserWithEmailAndPass(
-      String email, String password) async {
+      String email, String password, UserModel userModel) async {
     try {
       await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      print("created");
+
+      await _dbRef.collection('Users').add(userModel.toJson());
+      print("created and added!");
       firebaseUser.value != null
           ? isLoggedIn.value = true
           : isLoggedIn.value = false;
@@ -74,6 +79,7 @@ class AuthController extends GetxController {
           toastShowIcon: true);
       throw ex;
     }
+    return null;
   }
 
   // ignore: non_constant_identifier_names
@@ -87,7 +93,7 @@ class AuthController extends GetxController {
           androidToast: "Successfully LoggedIn!",
           toastDuration: 3,
           toastShowIcon: true);
-          isLoggedIn.value = true;
+      isLoggedIn.value = true;
       return true;
     } on FirebaseAuthException catch (e) {
       FlutterToastAlert.showToastAndAlert(
