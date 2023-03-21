@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "469516346001",
+    "project_id": "bloggerapp-fc897",
+    "storage_bucket": "bloggerapp-fc897.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:469516346001:android:428a93fa138bc03921d530",
+        "android_client_info": {
+          "package_name": "com.example.blogger_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "469516346001-h365scra2e1jga7johiceen3cgko8div.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXSahik5sgVx4DWGOgUrOVWaWGiT4SJAY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "469516346001-3cp8a6kiup91f0pjler3to72oodd9316.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "469516346001-6u842tco8jhl878olkag8eoj5p0t2qnl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.bloggerApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
