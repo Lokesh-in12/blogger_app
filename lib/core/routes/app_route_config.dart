@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 
 class MyAppRouterConfig {
   static GoRouter returnRouter(bool isLoggedIn) {
+    print("fsfesfef=>> $isLoggedIn");
     GoRouter router = GoRouter(
         initialLocation: '/signIn',
         // initialLocation: '/welcomePage',

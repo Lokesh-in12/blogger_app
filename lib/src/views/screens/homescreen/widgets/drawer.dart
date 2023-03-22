@@ -81,6 +81,24 @@ class MyDrawer extends StatelessWidget {
                 )
               ],
             ),
+            const SizedBox(
+              height: 25,
+            ),
+            InkWell(
+              onTap: ()=> authcontroller.logOut(context),
+              child: Row(
+                children: const [
+                  Icon(Icons.login_outlined),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "Logout",
+                    style: ThemeText.drawerTitle,
+                  )
+                ],
+              ),
+            ),
           ],
         ),
       ),

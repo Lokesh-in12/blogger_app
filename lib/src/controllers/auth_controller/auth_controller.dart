@@ -16,19 +16,22 @@ class AuthController extends GetxController {
   late final Rx<User?> firebaseUser;
   RxBool isLoggedIn = false.obs;
 
+  // @override
+  // void onReady() {
+  //   firebaseUser = Rx<User?>(_auth.currentUser);
+  //   firebaseUser.bindStream(_auth.userChanges());
+  //   ever(firebaseUser, _setInitialScreen);
+  // }
+
   @override
-  void onReady() {
+  void onInit() {
+    super.onInit();
     firebaseUser = Rx<User?>(_auth.currentUser);
     firebaseUser.bindStream(_auth.userChanges());
     ever(firebaseUser, _setInitialScreen);
   }
 
   void _setInitialScreen(User? user) {
-    // user == null
-    //     ? Get.offAll(() => const WelcomeScreen())
-    //     : Get.offAll(() => const HomeScreen());
-    // user == null ?
-
     user == null ? isLoggedIn.value = false : isLoggedIn.value = true;
   }
 
@@ -92,7 +95,6 @@ class AuthController extends GetxController {
   Future<bool?> LoginUserWithEmailAndPass(
       String email, String password, BuildContext ctx) async {
     try {
-
       await Fluttertoast.showToast(
           msg: "Successfully LoggedIn!",
           toastLength: Toast.LENGTH_SHORT,
@@ -140,6 +142,7 @@ class AuthController extends GetxController {
   //signOut
   Future<void> logOut(BuildContext context) async {
     await _auth.signOut();
+    // ignore: use_build_context_synchronously
     isLoggedIn.value = false;
     // ignore: use_build_context_synchronously
     context.goNamed(AppRouteConsts.signIn);
