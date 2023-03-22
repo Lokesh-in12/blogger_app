@@ -1,5 +1,3 @@
-import 'package:nanoid/async.dart';
-
 class UserModel {
   String? id;
   String? username;
@@ -9,7 +7,6 @@ class UserModel {
   List? blogs;
 
   UserModel({this.username, this.email, this.phoneNo, this.hashPass, this.id});
-  // UserModel({this.username, this.email, this.phoneNo, this.hashPass});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -20,12 +17,12 @@ class UserModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['username'] = this.username;
-    data['email'] = this.email;
-    data['phoneNo'] = this.phoneNo;
-    data['hashPass'] = this.hashPass;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['username'] = username;
+    data['email'] = email;
+    data['phoneNo'] = phoneNo;
+    data['hashPass'] = hashPass;
     return data;
   }
 }

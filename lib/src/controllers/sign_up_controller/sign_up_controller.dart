@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:email_validator/email_validator.dart';
@@ -20,7 +21,9 @@ class SignUpController extends GetxController {
   }
 
   void checkPass(String password) {
-    print(password.length);
+    if (kDebugMode) {
+      print(password.length);
+    }
     password.length > 6 ? validPass.value = true : validPass.value = false;
   }
 

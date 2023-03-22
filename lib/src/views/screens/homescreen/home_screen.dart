@@ -1,21 +1,40 @@
-import 'package:blogger_app/core/routes/app_route_constants.dart';
+import 'package:blogger_app/core/consts/styles/app_style.dart';
+import 'package:blogger_app/core/themes/themes.dart';
 import 'package:blogger_app/src/controllers/auth_controller/auth_controller.dart';
+import 'package:blogger_app/src/views/screens/homescreen/widgets/blog_cards.dart';
+import 'package:blogger_app/src/views/widgets/category/category_card.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
+import 'package:blogger_app/src/views/widgets/blog_card_horiz/blog_card_horiz.dart';
+import 'package:blogger_app/src/views/screens/homescreen/widgets/drawer.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
   final authcontroller = Get.find<AuthController>();
-
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    print("the user is=>> ${authcontroller.firebaseUser}");
+    if (kDebugMode) {
+      print("the user is=>> ${authcontroller.firebaseUser}");
+    }
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => scaffoldKey.currentState!.isDrawerOpen
+              ? scaffoldKey.currentState!.closeDrawer()
+              : scaffoldKey.currentState!.openDrawer(),
+          icon: const Icon(
+            CupertinoIcons.circle_grid_3x3_fill,
+            size: 25,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        foregroundColor: ThemeColor.blackBasic,
+        elevation: 0,
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 15),
@@ -31,32 +50,111 @@ class HomeScreen extends StatelessWidget {
           )
         ],
       ),
-      drawer: Drawer(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 20, top: 60),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("data"),
-              TextButton.icon(
-                  onPressed: () {
-                    authcontroller.logOut();
-                    context.goNamed(AppRouteConsts.signIn);
-                  },
-                  icon: Icon(Icons.logout),
-                  label: Text(""))
-            ],
+      drawer: MyDrawer(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Container(
+          width: double.infinity,
+          color: Colors.white,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Blogs for you',
+                          style: GoogleFonts.montserrat(
+                              textStyle: ThemeText.Heading2),
+                        ),
+                        //blog cards
+                        Padding(
+                          padding: const EdgeInsets.only(top: 25),
+                          child: SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: const [
+                                BlogCards(),
+                                BlogCards(),
+                                BlogCards(),
+                                BlogCards(),
+                                BlogCards(),
+                              ],
+                            ),
+                          ),
+                        ),
+                        //categories
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Let's Pick one",
+                                style: ThemeText.heading3,
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Wrap(
+                                spacing: 18,
+                                runSpacing: 15,
+                                children: const [
+                                  CategoryCard(),
+                                  CategoryCard(),
+                                  CategoryCard(),
+                                  CategoryCard(),
+                                  CategoryCard(),
+                                  CategoryCard(),
+                                  CategoryCard(),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+
+                        //all blogs
+
+                        const SizedBox(
+                          height: 20,
+                        ),
+
+                        SizedBox(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "All Blogs",
+                                style: ThemeText.heading3,
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: 5,
+                                physics: const NeverScrollableScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                itemBuilder: (context, index) {
+                                  return const BlogCardsHoriz();
+                                },
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
-      ),
-      body: Column(
-        children: [
-          SizedBox(
-            child: Column(
-              children: [Text('Blogs for you',)],
-            ),
-          )
-        ],
       ),
     );
   }
