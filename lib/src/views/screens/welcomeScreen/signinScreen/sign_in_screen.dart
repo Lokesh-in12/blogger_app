@@ -1,16 +1,16 @@
 import 'package:blogger_app/core/routes/app_route_constants.dart';
 import 'package:blogger_app/src/controllers/auth_controller/auth_controller.dart';
-import 'package:blogger_app/src/controllers/sign_in_up_controller/sign_in_up_controller.dart';
+import 'package:blogger_app/src/controllers/sign_in_controller/sign_in_controller.dart';
+import 'package:blogger_app/src/controllers/sign_up_controller/sign_up_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:blogger_app/core/consts/styles/app_style.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:fluttertoastalert/FlutterToastAlert.dart';
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
   final _formKey = GlobalKey<FormState>();
-  final signInAndUpController = Get.find<SignInAndUpController>();
+  final signInController = Get.find<SignInController>();
   final authController = Get.find<AuthController>();
 
   @override
@@ -44,21 +44,21 @@ class SignInScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               TextFormField(
-                                onChanged: (value) => signInAndUpController
-                                    .checkEmail(signInAndUpController.email.text
-                                        .trim()),
-                                controller: signInAndUpController.email,
+                                onChanged: (value) =>
+                                    signInController.checkEmail(
+                                        signInController.email.text.trim()),
+                                controller: signInController.email,
                                 decoration: InputDecoration(
                                     focusedBorder: UnderlineInputBorder(
-                                        borderSide: signInAndUpController
-                                                    .validEmail.value ==
-                                                true
-                                            ? const BorderSide(
-                                                color: Colors.white)
-                                            : const BorderSide(
-                                                color: Colors.red)),
+                                        borderSide:
+                                            signInController.validEmail.value ==
+                                                    true
+                                                ? const BorderSide(
+                                                    color: Colors.white)
+                                                : const BorderSide(
+                                                    color: Colors.red)),
                                     // enabledBorder: OutlineInputBorder(
-                                    //     borderSide: signInAndUpController
+                                    //     borderSide: signInController
                                     //                 .validEmail.value ==
                                     //             true
                                     //         ? const BorderSide(
@@ -72,22 +72,22 @@ class SignInScreen extends StatelessWidget {
                                 height: 10,
                               ),
                               TextFormField(
+                                obscureText: true,
                                 onChanged: (value) =>
-                                    signInAndUpController.checkPass(
-                                        signInAndUpController.password.text
-                                            .trim()),
-                                controller: signInAndUpController.password,
+                                    signInController.checkPass(
+                                        signInController.password.text.trim()),
+                                controller: signInController.password,
                                 decoration: InputDecoration(
                                     focusedBorder: UnderlineInputBorder(
-                                        borderSide: signInAndUpController
-                                                    .validPass.value ==
-                                                true
-                                            ? const BorderSide(
-                                                color: Colors.white)
-                                            : const BorderSide(
-                                                color: Colors.red)),
+                                        borderSide:
+                                            signInController.validPass.value ==
+                                                    true
+                                                ? const BorderSide(
+                                                    color: Colors.white)
+                                                : const BorderSide(
+                                                    color: Colors.red)),
                                     // enabledBorder: OutlineInputBorder(
-                                    //     borderSide: signInAndUpController
+                                    //     borderSide: signInController
                                     //                 .validPass.value ==
                                     //             true
                                     //         ? const BorderSide(
@@ -106,32 +106,27 @@ class SignInScreen extends StatelessWidget {
                                       backgroundColor:
                                           Color.fromARGB(255, 51, 51, 51)),
                                   onPressed: () {
-                                    if (signInAndUpController
-                                            .validEmail.value &&
-                                        signInAndUpController.validPass.value &&
-                                        signInAndUpController
-                                            .validPhoneNo.value &&
-                                        signInAndUpController
-                                            .validUsername.value) {
+                                    if (signInController.validEmail.value &&
+                                        signInController.validPass.value) {
                                       authController.LoginUserWithEmailAndPass(
-                                              signInAndUpController.email.text
-                                                  .trim(),
-                                              signInAndUpController
-                                                  .password.text
-                                                  .trim())
-                                          .then((data) {
-                                        if (data == false) {
-                                          print("aage nhi ");
-                                        } else {
-                                          signInAndUpController.email.clear();
-                                          signInAndUpController.name.clear();
-                                          signInAndUpController.phoneNo.clear();
-                                          signInAndUpController.password
-                                              .clear();
-                                          context
-                                              .pushNamed(AppRouteConsts.home);
-                                        }
+                                          signInController.email.text.trim(),
+                                          signInController.password.text.trim(),
+                                          context);
+                                      Future.delayed(Duration(seconds: 1), () {
+                                        signInController.email.clear();
+                                        signInController.password.clear();
                                       });
+                                      //   .then((data) {
+                                      // if (data == false) {
+                                      //   print("data=>>> $data");
+                                      // } else {
+                                      //   signInController.email.clear();
+                                      //   signInController.name.clear();
+                                      //   signInController.phoneNo.clear();
+                                      //   signInController.password.clear();
+                                      //   context.pushNamed(AppRouteConsts.home);
+                                      // }
+                                      // });
                                     }
                                   },
                                   child: const Text(

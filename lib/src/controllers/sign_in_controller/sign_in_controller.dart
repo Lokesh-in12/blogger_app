@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:email_validator/email_validator.dart';
 
-class SignInAndUpController extends GetxController {
+class SignInController extends GetxController {
   final name = TextEditingController();
   final email = TextEditingController();
   final phoneNo = TextEditingController();

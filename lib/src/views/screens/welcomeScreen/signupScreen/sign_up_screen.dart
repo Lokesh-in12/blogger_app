@@ -1,17 +1,17 @@
 import 'package:bcrypt/bcrypt.dart';
 import 'package:blogger_app/core/routes/app_route_constants.dart';
 import 'package:blogger_app/src/controllers/auth_controller/auth_controller.dart';
-import 'package:blogger_app/src/controllers/sign_in_up_controller/sign_in_up_controller.dart';
+import 'package:blogger_app/src/controllers/sign_up_controller/sign_up_controller.dart';
 import 'package:blogger_app/src/models/UserModel/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoastalert/FlutterToastAlert.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nanoid/async.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
 
-  final signInAndUpController = Get.find<SignInAndUpController>();
+  final signUpController = Get.find<SignUpController>();
   final authController = Get.find<AuthController>();
 
   final _formKey = GlobalKey<FormState>();
@@ -47,13 +47,12 @@ class SignUpScreen extends StatelessWidget {
                               children: [
                                 TextFormField(
                                   onChanged: (value) =>
-                                      signInAndUpController.checkUsername(
-                                          signInAndUpController.name.text
-                                              .trim()),
-                                  controller: signInAndUpController.name,
+                                      signUpController.checkUsername(
+                                          signUpController.name.text.trim()),
+                                  controller: signUpController.name,
                                   decoration: InputDecoration(
                                       focusedBorder: UnderlineInputBorder(
-                                          borderSide: signInAndUpController
+                                          borderSide: signUpController
                                                       .validUsername.value ==
                                                   true
                                               ? const BorderSide(
@@ -61,7 +60,7 @@ class SignUpScreen extends StatelessWidget {
                                               : const BorderSide(
                                                   color: Colors.red)),
                                       // enabledBorder: OutlineInputBorder(
-                                      //     borderSide: signInAndUpController
+                                      //     borderSide: signUpController
                                       //                 .validUsername.value ==
                                       //             true
                                       //         ? const BorderSide(
@@ -77,13 +76,12 @@ class SignUpScreen extends StatelessWidget {
                                 ),
                                 TextFormField(
                                   onChanged: (value) =>
-                                      signInAndUpController.checkEmail(
-                                          signInAndUpController.email.text
-                                              .trim()),
-                                  controller: signInAndUpController.email,
+                                      signUpController.checkEmail(
+                                          signUpController.email.text.trim()),
+                                  controller: signUpController.email,
                                   decoration: InputDecoration(
                                       focusedBorder: UnderlineInputBorder(
-                                          borderSide: signInAndUpController
+                                          borderSide: signUpController
                                                       .validEmail.value ==
                                                   true
                                               ? const BorderSide(
@@ -91,7 +89,7 @@ class SignUpScreen extends StatelessWidget {
                                               : const BorderSide(
                                                   color: Colors.red)),
                                       // enabledBorder: OutlineInputBorder(
-                                      //     borderSide: signInAndUpController
+                                      //     borderSide: signUpController
                                       //                 .validEmail.value ==
                                       //             true
                                       //         ? const BorderSide(
@@ -106,13 +104,12 @@ class SignUpScreen extends StatelessWidget {
                                 ),
                                 TextFormField(
                                   onChanged: (value) =>
-                                      signInAndUpController.checkPhoneNo(
-                                          signInAndUpController.phoneNo.text
-                                              .trim()),
-                                  controller: signInAndUpController.phoneNo,
+                                      signUpController.checkPhoneNo(
+                                          signUpController.phoneNo.text.trim()),
+                                  controller: signUpController.phoneNo,
                                   decoration: InputDecoration(
                                       focusedBorder: UnderlineInputBorder(
-                                          borderSide: signInAndUpController
+                                          borderSide: signUpController
                                                       .validPhoneNo.value ==
                                                   true
                                               ? const BorderSide(
@@ -120,7 +117,7 @@ class SignUpScreen extends StatelessWidget {
                                               : const BorderSide(
                                                   color: Colors.red)),
                                       // enabledBorder: OutlineInputBorder(
-                                      //     borderSide: signInAndUpController
+                                      //     borderSide: signUpController
                                       //                 .validPhoneNo.value ==
                                       //             true
                                       //         ? const BorderSide(
@@ -135,14 +132,13 @@ class SignUpScreen extends StatelessWidget {
                                   height: 10,
                                 ),
                                 TextFormField(
-                                  onChanged: (value) =>
-                                      signInAndUpController.checkPass(
-                                          signInAndUpController.password.text
-                                              .trim()),
-                                  controller: signInAndUpController.password,
+                                  onChanged: (value) => signUpController
+                                      .checkPass(signUpController.password.text
+                                          .trim()),
+                                  controller: signUpController.password,
                                   decoration: InputDecoration(
                                       focusedBorder: UnderlineInputBorder(
-                                          borderSide: signInAndUpController
+                                          borderSide: signUpController
                                                       .validPass.value ==
                                                   true
                                               ? const BorderSide(
@@ -150,7 +146,7 @@ class SignUpScreen extends StatelessWidget {
                                               : const BorderSide(
                                                   color: Colors.red)),
                                       // enabledBorder: OutlineInputBorder(
-                                      //     borderSide: signInAndUpController
+                                      //     borderSide: signUpController
                                       //                 .validPass.value ==
                                       //             true
                                       //         ? const BorderSide(
@@ -167,46 +163,41 @@ class SignUpScreen extends StatelessWidget {
                                 TextButton(
                                     style: TextButton.styleFrom(
                                         backgroundColor: Colors.black),
-                                    onPressed: () {
-                                      if (signInAndUpController
-                                              .validEmail.value &&
-                                          signInAndUpController
-                                              .validPass.value &&
-                                          signInAndUpController
-                                              .validPhoneNo.value &&
-                                          signInAndUpController
+                                    onPressed: () async {
+                                      if (signUpController.validEmail.value &&
+                                          signUpController.validPass.value &&
+                                          signUpController.validPhoneNo.value &&
+                                          signUpController
                                               .validUsername.value) {
+                                        final uniqueId = await nanoid(12);
                                         final hashedPass = BCrypt.hashpw(
-                                            "${signInAndUpController.password.text.trim()}",
+                                            "${signUpController.password.text.trim()}",
                                             BCrypt.gensalt());
                                         authController
                                             .createUserWithEmailAndPass(
-                                          signInAndUpController.email.text
-                                              .trim(),
-                                          signInAndUpController.password.text
-                                              .trim(),
+                                          signUpController.email.text.trim(),
+                                          signUpController.password.text.trim(),
                                           UserModel(
-                                              email: signInAndUpController
-                                                  .email.text
+                                              email: signUpController.email.text
                                                   .trim(),
-                                              username: signInAndUpController
+                                              username: signUpController
                                                   .name.text
                                                   .trim(),
-                                              phoneNo: signInAndUpController
+                                              phoneNo: signUpController
                                                   .phoneNo.text
                                                   .trim(),
-                                              hashPass: hashedPass),
+                                              hashPass: hashedPass,
+                                              id: uniqueId),
+                                          uniqueId,
                                         )
                                             .then((data) {
                                           if (data == null) {
                                             print("aage nhi ");
                                           } else {
-                                            signInAndUpController.email.clear();
-                                            signInAndUpController.name.clear();
-                                            signInAndUpController.phoneNo
-                                                .clear();
-                                            signInAndUpController.password
-                                                .clear();
+                                            signUpController.email.clear();
+                                            signUpController.name.clear();
+                                            signUpController.phoneNo.clear();
+                                            signUpController.password.clear();
                                             context.pushNamed(
                                                 AppRouteConsts.signIn);
                                           }
