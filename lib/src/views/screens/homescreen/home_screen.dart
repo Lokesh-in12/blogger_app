@@ -127,14 +127,14 @@ class HomeScreen extends StatelessWidget {
                               Wrap(
                                 spacing: 18,
                                 runSpacing: 15,
-                                children: const [
-                                  CategoryCard(),
-                                  CategoryCard(),
-                                  CategoryCard(),
-                                  CategoryCard(),
-                                  CategoryCard(),
-                                  CategoryCard(),
-                                  CategoryCard(),
+                                children: [
+                                  CategoryCard(title: "action", posting: false,),
+                                  CategoryCard(title: "action", posting: false,),
+                                  CategoryCard(title: "action", posting: false,),
+                                  CategoryCard(title: "action", posting: false,),
+                                  CategoryCard(title: "action", posting: false,),
+                                  CategoryCard(title: "action", posting: false,),
+                                  CategoryCard(title: "action", posting: false,),
                                 ],
                               )
                             ],

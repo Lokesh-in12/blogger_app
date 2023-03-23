@@ -17,6 +17,8 @@ class ProfileScreen extends StatelessWidget {
   String? id;
   ProfileScreen({super.key, this.id});
 
+  final authController = Get.find<AuthController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -165,7 +167,8 @@ class ProfileScreen extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: ThemeColor.blackBasic,
-          onPressed: () {},
+          onPressed: () => context.pushNamed(AppRouteConsts.createBlog,
+              params: {"id": "${authController.auth.currentUser!.uid}"}),
           child: Icon(Icons.post_add),
         ));
   }

@@ -40,9 +40,8 @@ class SignInScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             TextFormField(
-                              onChanged: (value) =>
-                                  signInController.checkEmail(
-                                      signInController.email.text.trim()),
+                              onChanged: (value) => signInController.checkEmail(
+                                  signInController.email.text.trim()),
                               controller: signInController.email,
                               decoration: InputDecoration(
                                   focusedBorder: UnderlineInputBorder(
@@ -69,9 +68,8 @@ class SignInScreen extends StatelessWidget {
                             ),
                             TextFormField(
                               obscureText: true,
-                              onChanged: (value) =>
-                                  signInController.checkPass(
-                                      signInController.password.text.trim()),
+                              onChanged: (value) => signInController.checkPass(
+                                  signInController.password.text.trim()),
                               controller: signInController.password,
                               decoration: InputDecoration(
                                   focusedBorder: UnderlineInputBorder(
@@ -108,7 +106,8 @@ class SignInScreen extends StatelessWidget {
                                         signInController.email.text.trim(),
                                         signInController.password.text.trim(),
                                         context);
-                                    Future.delayed(const Duration(seconds: 1), () {
+                                    Future.delayed(const Duration(seconds: 1),
+                                        () {
                                       signInController.email.clear();
                                       signInController.password.clear();
                                     });
