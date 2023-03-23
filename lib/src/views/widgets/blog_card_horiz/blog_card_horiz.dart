@@ -4,7 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BlogCardsHoriz extends StatelessWidget {
-  const BlogCardsHoriz({super.key});
+  bool? user;
+  BlogCardsHoriz({super.key, this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -33,29 +34,42 @@ class BlogCardsHoriz extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: const [
-                          CircleAvatar(
-                              radius: 10,
-                              backgroundImage: NetworkImage(
-                                  "https://images.unsplash.com/photo-1679381457571-ade79f46c61c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80")),
-                          SizedBox(
-                            width: 7,
-                          ),
-                          SizedBox(
-                            width: 80,
-                            child: Text(
-                              "dsgefksheugsigafesgeswgrg",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                    user!
+                        ? InkWell(
+                            onTap: () {},
+                            child: SizedBox(
+                              width: 230,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: const [
+                                  Icon(Icons.more_horiz_rounded)
+                                ],
+                              ),
                             ),
                           )
-                        ],
-                      ),
-                    ),
+                        : Padding(
+                            padding: const EdgeInsets.only(top: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: const [
+                                CircleAvatar(
+                                    radius: 10,
+                                    backgroundImage: NetworkImage(
+                                        "https://images.unsplash.com/photo-1679381457571-ade79f46c61c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80")),
+                                SizedBox(
+                                  width: 7,
+                                ),
+                                SizedBox(
+                                  width: 80,
+                                  child: Text(
+                                    "dsgefksheugsigafesgeswgrg",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
                     const SizedBox(
                       height: 7,
                     ),
@@ -68,22 +82,29 @@ class BlogCardsHoriz extends StatelessWidget {
                     const SizedBox(
                       height: 18,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text("Mar 14"),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        SmCategoryCard(),
-                        SizedBox(
-                          width: 100,
-                        ),
-                        Icon(
-                          CupertinoIcons.bookmark,
-                          size: 17,
-                        )
-                      ],
+                    SizedBox(
+                      width: 230,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: const [
+                              Text("Mar 14"),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              SmCategoryCard(),
+                            ],
+                          ),
+                          InkWell(
+                            onTap: () {},
+                            child: const Icon(
+                              CupertinoIcons.bookmark,
+                              size: 17,
+                            ),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 )

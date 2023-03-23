@@ -3,8 +3,12 @@ import 'package:blogger_app/core/routes/app_route_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+// ignore: must_be_immutable
 class BlogCards extends StatelessWidget {
-  const BlogCards({super.key});
+  double? boxWidth;
+  double? boxHeight;
+
+  BlogCards({super.key, this.boxWidth, this.boxHeight});
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +18,8 @@ class BlogCards extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 280,
-            height: 290,
+            width: boxWidth,
+            height: boxHeight,
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
             child: Padding(
               padding: const EdgeInsets.all(5.0),

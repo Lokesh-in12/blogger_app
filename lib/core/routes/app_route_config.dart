@@ -1,4 +1,5 @@
 import 'package:blogger_app/src/views/screens/homescreen/home_screen.dart';
+import 'package:blogger_app/src/views/screens/profilescreen/profile_screen.dart';
 import 'package:blogger_app/src/views/screens/singleblog/single_blog.dart';
 import 'package:blogger_app/src/views/screens/welcomeScreen/signinScreen/sign_in_screen.dart';
 import 'package:blogger_app/src/views/screens/welcomeScreen/signupScreen/sign_up_screen.dart';
@@ -11,7 +12,8 @@ class MyAppRouterConfig {
   static GoRouter returnRouter(bool isLoggedIn) {
     print("fsfesfef=>> $isLoggedIn");
     GoRouter router = GoRouter(
-        initialLocation: '/signIn',
+        // initialLocation: '/signIn',
+        initialLocation: '/profile/:id',
         // initialLocation: '/welcomePage',
         redirect: (context, state) async {
           if (isLoggedIn && state.location.startsWith('/signIn')) {
@@ -31,7 +33,13 @@ class MyAppRouterConfig {
                   name: AppRouteConsts.singleBlog,
                   builder: (context, state) =>
                       SingleBlogPage(id: state.params['id']!),
-                )
+                ),
+                GoRoute(
+                  path: 'profile/:id',
+                  name: AppRouteConsts.profile,
+                  builder: (context, state) =>
+                      ProfileScreen(id: state.params['id']!),
+                ),
               ]),
           GoRoute(
             path: '/welcomePage',

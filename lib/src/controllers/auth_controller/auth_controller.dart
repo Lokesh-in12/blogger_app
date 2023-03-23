@@ -16,6 +16,8 @@ class AuthController extends GetxController {
   late final Rx<User?> firebaseUser;
   RxBool isLoggedIn = false.obs;
 
+  FirebaseAuth get auth => _auth;
+
   // @override
   // void onReady() {
   //   firebaseUser = Rx<User?>(_auth.currentUser);
@@ -95,6 +97,8 @@ class AuthController extends GetxController {
   Future<bool?> LoginUserWithEmailAndPass(
       String email, String password, BuildContext ctx) async {
     try {
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+
       await Fluttertoast.showToast(
           msg: "Successfully LoggedIn!",
           toastLength: Toast.LENGTH_SHORT,
@@ -106,7 +110,6 @@ class AuthController extends GetxController {
       // ignore: use_build_context_synchronously
       ctx.goNamed(AppRouteConsts.home);
       isLoggedIn.value = true;
-
       return true;
     } on FirebaseAuthException catch (e) {
       final ex = SignUpWithEmailAndPasswordFailure.code(e.code);
@@ -141,10 +144,11 @@ class AuthController extends GetxController {
 
   //signOut
   Future<void> logOut(BuildContext context) async {
-    await _auth.signOut();
+    await _auth.signOut().then((value) {
+      isLoggedIn.value = false;
+      context.goNamed(AppRouteConsts.signIn);
+    });
     // ignore: use_build_context_synchronously
-    isLoggedIn.value = false;
     // ignore: use_build_context_synchronously
-    context.goNamed(AppRouteConsts.signIn);
   }
 }

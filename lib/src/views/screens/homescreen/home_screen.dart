@@ -1,4 +1,5 @@
 import 'package:blogger_app/core/consts/styles/app_style.dart';
+import 'package:blogger_app/core/routes/app_route_constants.dart';
 import 'package:blogger_app/core/themes/themes.dart';
 import 'package:blogger_app/src/controllers/auth_controller/auth_controller.dart';
 import 'package:blogger_app/src/views/screens/homescreen/widgets/blog_cards.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:blogger_app/src/views/widgets/blog_card_horiz/blog_card_horiz.dart';
 import 'package:blogger_app/src/views/screens/homescreen/widgets/drawer.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -39,12 +41,18 @@ class HomeScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 15),
             child: Row(
-              children: const [
-                Icon(CupertinoIcons.search),
-                SizedBox(
+              children: [
+                const Icon(CupertinoIcons.search),
+                const SizedBox(
                   width: 20,
                 ),
-                Icon(CupertinoIcons.profile_circled)
+                // (CupertinoIcons.profile_circled)
+                IconButton(
+                    onPressed: () => context.pushNamed(AppRouteConsts.profile,
+                            params: {
+                              "id": "${authcontroller.auth.currentUser?.uid}"
+                            }),
+                    icon: const Icon(CupertinoIcons.profile_circled))
               ],
             ),
           )
@@ -78,12 +86,27 @@ class HomeScreen extends StatelessWidget {
                             physics: const BouncingScrollPhysics(),
                             scrollDirection: Axis.horizontal,
                             child: Row(
-                              children: const [
-                                BlogCards(),
-                                BlogCards(),
-                                BlogCards(),
-                                BlogCards(),
-                                BlogCards(),
+                              children: [
+                                BlogCards(
+                                  boxWidth: 280,
+                                  boxHeight: 290,
+                                ),
+                                BlogCards(
+                                  boxWidth: 280,
+                                  boxHeight: 290,
+                                ),
+                                BlogCards(
+                                  boxWidth: 280,
+                                  boxHeight: 290,
+                                ),
+                                BlogCards(
+                                  boxWidth: 280,
+                                  boxHeight: 290,
+                                ),
+                                BlogCards(
+                                  boxWidth: 280,
+                                  boxHeight: 290,
+                                ),
                               ],
                             ),
                           ),
@@ -141,7 +164,9 @@ class HomeScreen extends StatelessWidget {
                                 physics: const NeverScrollableScrollPhysics(),
                                 scrollDirection: Axis.vertical,
                                 itemBuilder: (context, index) {
-                                  return const BlogCardsHoriz();
+                                  return BlogCardsHoriz(
+                                    user: false,
+                                  );
                                 },
                               )
                             ],

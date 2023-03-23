@@ -62,4 +62,7 @@ abstract class ThemeText {
 
   static const TextStyle blogDescStyle =
       TextStyle(fontSize: 20, letterSpacing: 1, color: ThemeColor.blackBasic);
+
+
+
 }
