@@ -80,13 +80,13 @@ class SignUpScreen extends StatelessWidget {
                                 controller: signUpController.email,
                                 decoration: InputDecoration(
                                     focusedBorder: UnderlineInputBorder(
-                                        borderSide: signUpController
-                                                    .validEmail.value ==
-                                                true
-                                            ? const BorderSide(
-                                                color: Colors.white)
-                                            : const BorderSide(
-                                                color: Colors.red)),
+                                        borderSide:
+                                            signUpController.validEmail.value ==
+                                                    true
+                                                ? const BorderSide(
+                                                    color: Colors.white)
+                                                : const BorderSide(
+                                                    color: Colors.red)),
                                     // enabledBorder: OutlineInputBorder(
                                     //     borderSide: signUpController
                                     //                 .validEmail.value ==
@@ -96,7 +96,8 @@ class SignUpScreen extends StatelessWidget {
                                     //         : const BorderSide(
                                     //             color: Colors.red)),
                                     label: const Text("Email"),
-                                    prefixIcon: const Icon(Icons.email_outlined)),
+                                    prefixIcon:
+                                        const Icon(Icons.email_outlined)),
                               ),
                               const SizedBox(
                                 height: 10,
@@ -124,26 +125,26 @@ class SignUpScreen extends StatelessWidget {
                                     //         : const BorderSide(
                                     //             color: Colors.red)),
                                     label: const Text("phone no"),
-                                    prefixIcon:
-                                        const Icon(Icons.phone_android_rounded)),
+                                    prefixIcon: const Icon(
+                                        Icons.phone_android_rounded)),
                               ),
                               const SizedBox(
                                 height: 10,
                               ),
                               TextFormField(
-                                onChanged: (value) => signUpController
-                                    .checkPass(signUpController.password.text
-                                        .trim()),
+                                onChanged: (value) =>
+                                    signUpController.checkPass(
+                                        signUpController.password.text.trim()),
                                 controller: signUpController.password,
                                 decoration: InputDecoration(
                                     focusedBorder: UnderlineInputBorder(
-                                        borderSide: signUpController
-                                                    .validPass.value ==
-                                                true
-                                            ? const BorderSide(
-                                                color: Colors.white)
-                                            : const BorderSide(
-                                                color: Colors.red)),
+                                        borderSide:
+                                            signUpController.validPass.value ==
+                                                    true
+                                                ? const BorderSide(
+                                                    color: Colors.white)
+                                                : const BorderSide(
+                                                    color: Colors.red)),
                                     // enabledBorder: OutlineInputBorder(
                                     //     borderSide: signUpController
                                     //                 .validPass.value ==
@@ -166,8 +167,7 @@ class SignUpScreen extends StatelessWidget {
                                     if (signUpController.validEmail.value &&
                                         signUpController.validPass.value &&
                                         signUpController.validPhoneNo.value &&
-                                        signUpController
-                                            .validUsername.value) {
+                                        signUpController.validUsername.value) {
                                       final uniqueId = await nanoid(12);
                                       final hashedPass = BCrypt.hashpw(
                                           signUpController.password.text.trim(),
@@ -179,8 +179,7 @@ class SignUpScreen extends StatelessWidget {
                                         UserModel(
                                             email: signUpController.email.text
                                                 .trim(),
-                                            username: signUpController
-                                                .name.text
+                                            username: signUpController.name.text
                                                 .trim(),
                                             phoneNo: signUpController
                                                 .phoneNo.text
@@ -199,8 +198,8 @@ class SignUpScreen extends StatelessWidget {
                                           signUpController.name.clear();
                                           signUpController.phoneNo.clear();
                                           signUpController.password.clear();
-                                          context.pushNamed(
-                                              AppRouteConsts.signIn);
+                                          context
+                                              .pushNamed(AppRouteConsts.signIn);
                                         }
                                       });
                                     }
@@ -211,8 +210,8 @@ class SignUpScreen extends StatelessWidget {
                                         fontSize: 14, color: Colors.white),
                                   )),
                               TextButton(
-                                  onPressed: () => context
-                                      .pushNamed(AppRouteConsts.signIn),
+                                  onPressed: () =>
+                                      context.pushNamed(AppRouteConsts.signIn),
                                   child: const Text(
                                     "Already have an account?",
                                     style: TextStyle(

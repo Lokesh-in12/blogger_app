@@ -1,12 +1,19 @@
 import 'package:blogger_app/core/consts/styles/app_style.dart';
+import 'package:blogger_app/core/utils/helpers/time_formatter.dart';
+import 'package:blogger_app/src/controllers/blogs_controller/blogs_controller.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 
+// ignore: must_be_immutable
 class AuthorCardInfo extends StatelessWidget {
   bool? blackTxt;
+  // ignore: invalid_annotation_target
   AuthorCardInfo({super.key, @optionalTypeArgs this.blackTxt});
+  final blogsController = Get.find<BlogsController>();
 
   @override
   Widget build(BuildContext context) {
+    final singleBlog = blogsController.singleBlog[0];
     return Row(
       children: [
         SizedBox(
@@ -25,13 +32,13 @@ class AuthorCardInfo extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Ava Martinez",
+              singleBlog.authorName.toString(),
               style: blackTxt ?? false
                   ? ThemeText.blogText
                   : ThemeText.blogTextBlack,
             ),
             Text(
-              "4d ago",
+              getPostTimeFormatted(singleBlog.postTime.toString()),
               style: blackTxt ?? false
                   ? ThemeText.blogText
                   : ThemeText.blogTextBlack,

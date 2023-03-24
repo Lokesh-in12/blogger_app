@@ -5,12 +5,14 @@ import 'package:blogger_app/src/views/screens/singleblog/single_blog.dart';
 import 'package:blogger_app/src/views/screens/welcomeScreen/signinScreen/sign_in_screen.dart';
 import 'package:blogger_app/src/views/screens/welcomeScreen/signupScreen/sign_up_screen.dart';
 import 'package:blogger_app/src/views/screens/welcomeScreen/welcome_screen.dart';
+import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'app_route_constants.dart';
 import 'package:go_router/go_router.dart';
 
 class MyAppRouterConfig {
-  static GoRouter returnRouter(bool isLoggedIn) {
+  static GoRouter returnRouter(bool isLoggedIn, GoogleSignInAccount? account) {
     print("fsfesfef=>> $isLoggedIn");
     GoRouter router = GoRouter(
         initialLocation: '/signIn',

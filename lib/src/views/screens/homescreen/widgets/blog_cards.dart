@@ -17,8 +17,8 @@ class BlogCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () =>
-          context.pushNamed(AppRouteConsts.singleBlog, params: {"id": "3"}),
+      onTap: () => context.pushNamed(AppRouteConsts.singleBlog,
+          params: {"id": e!.id.toString()}),
       child: Row(
         children: [
           Container(

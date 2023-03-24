@@ -9,15 +9,32 @@ import 'package:go_router/go_router.dart';
 import 'package:blogger_app/src/views/widgets/category/sm_category_card.dart';
 
 // ignore: must_be_immutable
-class SingleBlogPage extends StatelessWidget {
-  final blogsController = Get.find<BlogsController>();
-
+class SingleBlogPage extends StatefulWidget {
   String? id;
   SingleBlogPage({super.key, this.id});
 
   @override
+  State<SingleBlogPage> createState() => _SingleBlogPageState();
+}
+
+class _SingleBlogPageState extends State<SingleBlogPage> {
+  final blogsController = Get.find<BlogsController>();
+
+  @override
+  void initState() {
+    super.initState();
+    asyncFunction(widget.id!);
+  }
+
+  Future<void> asyncFunction(id) async {
+    await blogsController.handleSingleBlog(id);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final singleBlog = blogsController.AllBlogs.firstWhere((e) => e.id == id);
+    // final singleBlog =
+    //     blogsController.AllBlogs.firstWhere((e) => e.id == widget.id);
+    final singleBlog = blogsController.singleBlog[0];
     return Scaffold(
       body: SafeArea(
           child: SingleChildScrollView(
@@ -28,11 +45,17 @@ class SingleBlogPage extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   height: 400,
-                  child: Image.network(
-                    filterQuality: FilterQuality.low,
-                    "https://images.unsplash.com/photo-1679458118229-6ac5b35757d4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80",
-                    fit: BoxFit.cover,
-                  ),
+                  child: singleBlog.images != null
+                      ? Image.network(
+                          filterQuality: FilterQuality.low,
+                          "${singleBlog.images}",
+                          fit: BoxFit.cover,
+                        )
+                      : Image.network(
+                          filterQuality: FilterQuality.low,
+                          "https://images.unsplash.com/photo-1679458118229-6ac5b35757d4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80",
+                          fit: BoxFit.cover,
+                        ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -59,12 +82,12 @@ class SingleBlogPage extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SmCategoryCard(),
+                              SmCategoryCard(title: singleBlog.category),
                               SizedBox(
                                 height: 10,
                               ),
                               Text(
-                                "The Principles Of Design Thinking.",
+                                singleBlog.title.toString(),
                                 style: ThemeText.singleBlogHeading,
                               ),
                             ],
@@ -98,8 +121,8 @@ class SingleBlogPage extends StatelessWidget {
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width,
-                        child: const Text(
-                          " User(displayName: null, email: lokeshmali@gmail.com, emailVerified: false, isAnonymous: false, metadata: UserMetadata(creationTime: 2023-03-22 07:05:54.529Z, lastSignInTime: 2023-03-22 11:18:53.896Z), phoneNumber: null, photoURL: null, providerData, [UserInfo(displayName: null, email: lokeshmali@gmail.com, phoneNumber: null, photoURL: null, providerId: password, uid: lokeshmali@gmail.com)], refreshToken: , tenantId: null, uid: tPTDaWCEhPO1JD2abHbqEgav7Y02)User(displayName: null, email: lokeshmali@gmail.com, emailVerified: false, isAnonymous: false, metadata: UserMetadata(creationTime: 2023-03-22 07:05:54.529Z, lastSignInTime: 2023-03-22 11:18:53.896Z), phoneNumber: null, photoURL: null, providerData, [UserInfo(displayName: null, email: lokeshmali@gmail.com, phoneNumber: null, photoURL: null, providerId: password, uid: lokeshmali@gmail.com)], refreshToken: , tenantId: null, uid: tPTDaWCEhPO1JD2abHbqEgav7Y02)User(displayName: null, email: lokeshmali@gmail.com, emailVerified: false, isAnonymous: false, metadata: UserMetadata(creationTime: )",
+                        child: Text(
+                          singleBlog.desc.toString(),
                           style: ThemeText.blogDescStyle,
                         ),
                       )

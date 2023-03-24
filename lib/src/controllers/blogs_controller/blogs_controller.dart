@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:blogger_app/core/routes/app_route_constants.dart';
+import 'package:blogger_app/src/controllers/auth_controller/auth_controller.dart';
 import 'package:blogger_app/src/models/blog_model/blog_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,6 +17,8 @@ import 'package:intl/intl.dart';
 class BlogsController extends GetxController {
   final ImagePicker _picker = ImagePicker();
   final _auth = FirebaseAuth.instance;
+  final authController = Get.find<AuthController>();
+  Rx<bool> isLoading = false.obs;
 
   final imgFile = File('').obs;
   TextEditingController title = TextEditingController();
@@ -27,19 +30,20 @@ class BlogsController extends GetxController {
   final _dbRef = FirebaseFirestore.instance;
 
   //Variables for storing blogs
+  // ignore: non_constant_identifier_names
   final AllBlogs = <BlogModel>[].obs;
 
   //users blogs
   final usersBlog = <BlogModel>[].obs;
 
+  //singleBlog
   final singleBlog = <BlogModel>[].obs;
 
-  void handleSingleBlog(String id) {
-    singleBlog.value = [AllBlogs.firstWhere((element) => element.id == id)];
+  Future<void> handleSingleBlog(String id) async {
+    singleBlog.value = AllBlogs.where((element) => element.id == id).toList();
   }
 
-  void fetchAllBlogs() async {
-    print("in detchAllBlogs");
+  Future<void> fetchAllBlogs() async {
     try {
       QuerySnapshot<Map<String, dynamic>> res =
           await _dbRef.collection("blogs").get();
@@ -48,19 +52,23 @@ class BlogsController extends GetxController {
       List<BlogModel> allBlogss =
           listData.map((e) => BlogModel.fromJson(e)).toList();
       AllBlogs.value = allBlogss;
-
-      print("data in [] => $AllBlogs");
     } catch (e) {
-      print("error in fetchAllBlogs ==> $e");
+      if (kDebugMode) {
+        print("error in fetchAllBlogs ==> $e");
+      }
     }
   }
 
-  void getUsersBlog() {
-    print("runnnnnn ${usersBlog.length}");
-    Future.delayed(Duration.zero, () {
-      usersBlog.value = AllBlogs.takeWhile(
-          (element) => element.authorId == _auth.currentUser!.uid).toList();
-      print("runnnnnn ${usersBlog.length}");
+  Future<void> getUsersBlog() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_auth.currentUser?.uid != null) {
+        usersBlog.value = AllBlogs.where(
+            (element) => element.authorId == _auth.currentUser!.uid).toList();
+      } else {
+        usersBlog.value = AllBlogs.where((element) =>
+                element.authorId == authController.googleAccount.value!.id)
+            .toList();
+      }
     });
   }
 
@@ -73,15 +81,16 @@ class BlogsController extends GetxController {
   }
 
   void postBlog(BuildContext ctx) async {
+    isLoading(true);
     String uniqueId = await nanoid(7);
 
     String uniqueImageName = DateTime.now().millisecondsSinceEpoch.toString();
 
     final UploadTask uploadTask =
         storageReference.child(uniqueImageName).putFile(imgFile.value);
-    uploadTask.then((TaskSnapshot taskSnapshot) {
-      taskSnapshot.ref.getDownloadURL().then((imgUrl) {
-        saveBlogToFireStore(
+    await uploadTask.then((TaskSnapshot taskSnapshot) {
+      taskSnapshot.ref.getDownloadURL().then((imgUrl) async {
+        await saveBlogToFireStore(
             BlogModel(
                 authorId: _auth.currentUser!.uid,
                 authorName: _auth.currentUser!.email!.split("@")[0].toString(),
@@ -93,7 +102,8 @@ class BlogsController extends GetxController {
                 postDate: DateTime.now().toLocal().toString(),
                 id: uniqueId),
             uniqueId);
-        ctx.pushNamed(AppRouteConsts.profile,
+        isLoading(false);
+        ctx.goNamed(AppRouteConsts.profile,
             params: {"id": _auth.currentUser!.uid.toString()});
       });
     });
@@ -103,10 +113,8 @@ class BlogsController extends GetxController {
     imgFile.value = File("");
   }
 
-  void saveBlogToFireStore(BlogModel blogModel, String uniqueId) async {
-    print("in saveBlogToFireStore ");
+  Future<void> saveBlogToFireStore(BlogModel blogModel, String uniqueId) async {
     await _dbRef.collection("blogs").doc(uniqueId).set(blogModel.toJson());
-    print("in saveBlogToFireStore lastline");
   }
 
   Future<void> pickImage() async {

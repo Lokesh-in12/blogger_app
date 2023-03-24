@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthController extends GetxController {
   //variables
@@ -15,8 +16,32 @@ class AuthController extends GetxController {
   final _dbRef = FirebaseFirestore.instance;
   late final Rx<User?> firebaseUser;
   RxBool isLoggedIn = false.obs;
-
   FirebaseAuth get auth => _auth;
+
+  //googelOauthController
+  final googleSignIn = GoogleSignIn();
+  final googleAccount = Rx<GoogleSignInAccount?>(null);
+
+  Future<void> login() async {
+    try {
+      googleAccount.value = await googleSignIn.signIn();
+      isLoggedIn.value = true;
+    } on FormatException catch (e) {
+      Fluttertoast.showToast(
+          msg: e.message,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
+
+  Future<void> googleLogout() async {
+    googleAccount.value = await googleSignIn.signOut();
+    isLoggedIn.value = false;
+  }
 
   // @override
   // void onReady() {
@@ -31,6 +56,15 @@ class AuthController extends GetxController {
     firebaseUser = Rx<User?>(_auth.currentUser);
     firebaseUser.bindStream(_auth.userChanges());
     ever(firebaseUser, _setInitialScreen);
+    // if (googleAccount.value?.displayName != null) {
+    //   isLoggedIn(true);
+    // }
+    isSiggnedin();
+  }
+
+  Future<void> isSiggnedin() async {
+    bool isSiggnedin = await googleSignIn.isSignedIn();
+    isSiggnedin ? isLoggedIn.value = true : isLoggedIn.value = false;
   }
 
   void _setInitialScreen(User? user) {
@@ -143,12 +177,8 @@ class AuthController extends GetxController {
   }
 
   //signOut
-  Future<void> logOut(BuildContext context) async {
-    await _auth.signOut().then((value) {
-      isLoggedIn.value = false;
-      // context.goNamed(AppRouteConsts.signIn);
-    });
-    // ignore: use_build_context_synchronously
-    // ignore: use_build_context_synchronously
+  Future<void> logOutEmail(BuildContext context) async {
+    await _auth.signOut();
+    isLoggedIn.value = false;
   }
 }

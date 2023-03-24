@@ -1,9 +1,14 @@
+import 'package:blogger_app/core/consts/styles/app_style.dart';
 import 'package:blogger_app/core/routes/app_route_constants.dart';
+import 'package:blogger_app/core/themes/themes.dart';
 import 'package:blogger_app/src/controllers/auth_controller/auth_controller.dart';
+import 'package:blogger_app/src/controllers/blogs_controller/blogs_controller.dart';
 import 'package:blogger_app/src/controllers/sign_in_controller/sign_in_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
@@ -23,7 +28,8 @@ class SignInScreen extends StatelessWidget {
                 // ignore: prefer_const_constructors
                 Text(
                   "Login to proceed further",
-                  style: const TextStyle(fontSize: 22),
+                  style: GoogleFonts.montserrat(
+                      textStyle: TextStyle(fontSize: 22)),
                 ),
                 // ignore: prefer_const_constructors
                 SizedBox(
@@ -60,7 +66,9 @@ class SignInScreen extends StatelessWidget {
                                   //             color: Colors.white)
                                   //         : const BorderSide(
                                   //             color: Colors.red)),
-                                  label: const Text("Email"),
+                                  label: Text("Email",
+                                      style: GoogleFonts.montserrat(
+                                          textStyle: TextStyle(fontSize: 15))),
                                   prefixIcon: const Icon(Icons.email_outlined)),
                             ),
                             const SizedBox(
@@ -88,7 +96,10 @@ class SignInScreen extends StatelessWidget {
                                   //             color: Colors.white)
                                   //         : const BorderSide(
                                   //             color: Colors.red)),
-                                  label: const Text("password"),
+                                  label: Text("password",
+                                      style: GoogleFonts.montserrat(
+                                          textStyle:
+                                              const TextStyle(fontSize: 15))),
                                   prefixIcon:
                                       const Icon(Icons.fingerprint_outlined)),
                             ),
@@ -99,15 +110,15 @@ class SignInScreen extends StatelessWidget {
                                 style: TextButton.styleFrom(
                                     backgroundColor:
                                         const Color.fromARGB(255, 51, 51, 51)),
-                                onPressed: () {
+                                onPressed: () async {
                                   if (signInController.validEmail.value &&
                                       signInController.validPass.value) {
                                     authController.LoginUserWithEmailAndPass(
                                         signInController.email.text.trim(),
                                         signInController.password.text.trim(),
                                         context);
-                                    Future.delayed(const Duration(seconds: 1),
-                                        () {
+                                    await Future.delayed(
+                                        const Duration(seconds: 1), () {
                                       signInController.email.clear();
                                       signInController.password.clear();
                                     });
@@ -124,18 +135,22 @@ class SignInScreen extends StatelessWidget {
                                     // });
                                   }
                                 },
-                                child: const Text(
+                                child: Text(
                                   "Signin",
-                                  style: TextStyle(
-                                      fontSize: 14, color: Colors.white),
+                                  style: GoogleFonts.montserrat(
+                                      textStyle: const TextStyle(
+                                          fontSize: 15,
+                                          color: ThemeColor.white)),
                                 )),
                             TextButton(
                                 onPressed: () =>
                                     context.pushNamed(AppRouteConsts.signUp),
-                                child: const Text(
+                                child: Text(
                                   "Don't have an account? Let's create one!",
-                                  style: TextStyle(
-                                      fontSize: 14, color: Colors.black),
+                                  style: GoogleFonts.montserrat(
+                                      textStyle: const TextStyle(
+                                          fontSize: 15,
+                                          color: ThemeColor.blackBasic)),
                                 )),
                             const Divider(
                               height: 20,
@@ -144,12 +159,31 @@ class SignInScreen extends StatelessWidget {
                             const SizedBox(
                               height: 10,
                             ),
-                            Row(
+                            Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Image.asset(
-                                  'assets/images/googleicons.png',
-                                  height: 35,
+                                Text(
+                                  "Sign In With Google",
+                                  style: GoogleFonts.montserrat(
+                                      textStyle: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w300)),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                InkWell(
+                                  onTap: () async {
+                                    await authController.login();
+                                    if (authController.googleAccount.value !=
+                                        null) {
+                                      context.goNamed(AppRouteConsts.home);
+                                    } else {}
+                                  },
+                                  child: Image.asset(
+                                    'assets/images/googleicons.png',
+                                    height: 45,
+                                  ),
                                 )
                               ],
                             )

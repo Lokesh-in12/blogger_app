@@ -36,9 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (kDebugMode) {
-      print("the user is=>> ${authcontroller.firebaseUser}");
-    }
+    if (kDebugMode) {}
     return Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
@@ -59,7 +57,6 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.only(right: 15),
               child: Row(
                 children: [
-                  const Icon(CupertinoIcons.search),
                   const SizedBox(
                     width: 20,
                   ),
@@ -79,8 +76,11 @@ class _HomeScreenState extends State<HomeScreen> {
         body: Obx(() {
           final blogs = blogsController.AllBlogs;
           if (blogsController.AllBlogs.length == 0) {
-            return LoadingAnimationWidget.fourRotatingDots(
-                color: ThemeColor.blackBasic, size: 40);
+            return Scaffold(
+              body: Center(
+                  child: LoadingAnimationWidget.fourRotatingDots(
+                      color: ThemeColor.blackBasic, size: 40)),
+            );
           }
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -227,6 +227,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           );
-        }));
+        }),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: ThemeColor.blackBasic,
+          onPressed: () => context.pushNamed(AppRouteConsts.createBlog,
+              params: {"id": "${authcontroller.auth.currentUser!.uid}"}),
+          child: Icon(Icons.post_add),
+        ));
   }
 }

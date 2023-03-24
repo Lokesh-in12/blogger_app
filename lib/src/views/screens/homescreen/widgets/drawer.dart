@@ -13,6 +13,7 @@ class MyDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("current User is=>>> ${authcontroller.googleAccount.value}");
     return Drawer(
       child: Padding(
         padding: const EdgeInsets.only(left: 30, top: 60),
@@ -20,7 +21,11 @@ class MyDrawer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              authcontroller.auth.currentUser?.email!.split("@")[0].toString() ?? "",
+              authcontroller.auth.currentUser?.email!
+                      .split("@")[0]
+                      .toString() ??
+                  authcontroller.googleAccount.value?.displayName.toString() ??
+                  "",
               style: ThemeText.heading2,
             ),
             const SizedBox(
@@ -87,8 +92,13 @@ class MyDrawer extends StatelessWidget {
               height: 25,
             ),
             InkWell(
-              onTap: () {
-                authcontroller.logOut(context);
+              onTap: () async {
+                if (authcontroller.googleAccount.value == null) {
+                  await authcontroller.logOutEmail(context);
+                } else {
+                  await authcontroller.googleLogout();
+                }
+                // ignore: use_build_context_synchronously
                 context.goNamed(AppRouteConsts.signIn);
               },
               child: Row(

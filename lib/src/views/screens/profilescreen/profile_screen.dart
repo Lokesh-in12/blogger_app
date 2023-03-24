@@ -30,6 +30,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
+    asyncFnc();
+  }
+
+  Future<void> asyncFnc() async {
+    await blogsController.fetchAllBlogs();
     blogsController.getUsersBlog();
   }
 
@@ -66,7 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         CircleAvatar(
                           radius: 40,
                           backgroundImage: NetworkImage(authController
-                                  .auth.currentUser!.photoURL ??
+                                  .googleAccount.value!.photoUrl ??
                               "https://images.unsplash.com/photo-1679412330231-4a049ffd294b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80"),
                         ),
                         const SizedBox(
@@ -81,7 +86,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             SizedBox(
                               width: 200,
                               child: Text(
-                                "Lokesh Mali",
+                                authController.googleAccount.value?.displayName
+                                        .toString() ??
+                                    authController.auth.currentUser!.email!
+                                        .split("@")[0]
+                                        .toString(),
                                 style: GoogleFonts.montserrat(
                                     textStyle: const TextStyle(fontSize: 27)),
                               ),
