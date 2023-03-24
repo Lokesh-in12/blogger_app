@@ -12,14 +12,17 @@ import 'app_route_constants.dart';
 import 'package:go_router/go_router.dart';
 
 class MyAppRouterConfig {
-  static GoRouter returnRouter(bool isLoggedIn, GoogleSignInAccount? account) {
+  static GoRouter returnRouter(
+      bool isLoggedIn, GoogleSignInAccount? account, Future<bool?> isKey) {
     print("fsfesfef=>> $isLoggedIn");
+    print("isKey=>> ${isKey}");
     GoRouter router = GoRouter(
         initialLocation: '/signIn',
         // initialLocation: '/createBlog/:id',
         // initialLocation: '/welcomePage',
         redirect: (context, state) async {
-          if (isLoggedIn && state.location.startsWith('/signIn')) {
+          if (isLoggedIn &&
+              state.location.startsWith('/signIn')) {
             return '/';
           } else {
             return null;

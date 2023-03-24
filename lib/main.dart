@@ -5,7 +5,6 @@ import 'package:blogger_app/src/controllers/auth_controller/auth_controller.dart
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +28,7 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       routerConfig: MyAppRouterConfig.returnRouter(
-          authController.isLoggedIn.value, authController.googleAccount.value),
+          authController.isLoggedIn.value, authController.googleAccount.value , authController.getPref()),
     );
   }
 }

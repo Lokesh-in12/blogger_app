@@ -92,8 +92,12 @@ class BlogsController extends GetxController {
       taskSnapshot.ref.getDownloadURL().then((imgUrl) async {
         await saveBlogToFireStore(
             BlogModel(
-                authorId: _auth.currentUser!.uid,
-                authorName: _auth.currentUser!.email!.split("@")[0].toString(),
+                authorId: _auth.currentUser?.uid ??
+                    authController.googleAccount.value!.id,
+                authorName: _auth.currentUser?.email!
+                        .split("@")[0]
+                        .toString() ??
+                    authController.googleAccount.value!.displayName.toString(),
                 category: category.toString(),
                 images: imgUrl.toString(),
                 title: title.text.trim().toString(),
@@ -103,8 +107,10 @@ class BlogsController extends GetxController {
                 id: uniqueId),
             uniqueId);
         isLoading(false);
-        ctx.goNamed(AppRouteConsts.profile,
-            params: {"id": _auth.currentUser!.uid.toString()});
+        ctx.goNamed(AppRouteConsts.profile, params: {
+          "id": _auth.currentUser?.uid.toString() ??
+              authController.googleAccount.value!.id
+        });
       });
     });
   }
