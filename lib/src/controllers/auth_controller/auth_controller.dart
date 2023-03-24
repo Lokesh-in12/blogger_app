@@ -146,7 +146,7 @@ class AuthController extends GetxController {
   Future<void> logOut(BuildContext context) async {
     await _auth.signOut().then((value) {
       isLoggedIn.value = false;
-      context.goNamed(AppRouteConsts.signIn);
+      // context.goNamed(AppRouteConsts.signIn);
     });
     // ignore: use_build_context_synchronously
     // ignore: use_build_context_synchronously

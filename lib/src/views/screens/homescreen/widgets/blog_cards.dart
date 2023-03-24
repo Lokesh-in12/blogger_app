@@ -1,14 +1,18 @@
 import 'package:blogger_app/core/consts/styles/app_style.dart';
 import 'package:blogger_app/core/routes/app_route_constants.dart';
+import 'package:blogger_app/src/models/blog_model/blog_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:blogger_app/core/utils/helpers/time_formatter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // ignore: must_be_immutable
 class BlogCards extends StatelessWidget {
   double? boxWidth;
   double? boxHeight;
+  BlogModel? e;
 
-  BlogCards({super.key, this.boxWidth, this.boxHeight});
+  BlogCards({super.key, this.boxWidth, this.boxHeight, @required this.e});
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +34,10 @@ class BlogCards extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Image.network(
-                        "https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1380&q=80",
+                        e?.images.toString() ??
+                            "https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1380&q=80",
                         fit: BoxFit.fill,
+                        height: 200,
                       ),
                     ),
                   ),
@@ -44,9 +50,9 @@ class BlogCards extends StatelessWidget {
                       ),
                       width: 80,
                       height: 25,
-                      child: const Center(
+                      child: Center(
                           child: Text(
-                        "Adventure",
+                        e?.category.toString() ?? "No Category",
                         style: ThemeText.cardCategoryBlog,
                       )),
                     ),
@@ -60,12 +66,14 @@ class BlogCards extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SizedBox(
+                          SizedBox(
                               width: 200,
                               child: Text(
-                                "The principles of Design Thinking",
-                                maxLines: 2,
-                                style: ThemeText.Heading3,
+                                e?.title.toString() ??
+                                    "The principles of Design Thinking",
+                                maxLines: 1,
+                                style: GoogleFonts.montserrat(
+                                    textStyle: ThemeText.blogsForYou),
                               )),
                           const SizedBox(
                             height: 10,
@@ -86,14 +94,18 @@ class BlogCards extends StatelessWidget {
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
+                                children: [
                                   Text(
-                                    "Ava Martinez",
-                                    style: ThemeText.blogText,
+                                    e?.authorName ?? "Ava Martinez",
+                                    style: GoogleFonts.montserrat(
+                                        textStyle: ThemeText.blogs_author),
                                   ),
                                   Text(
-                                    "4d ago",
-                                    style: ThemeText.blogText,
+                                    getPostTimeFormatted(
+                                            e!.postTime.toString()) ??
+                                        "",
+                                    style: GoogleFonts.montserrat(
+                                        textStyle: ThemeText.blogs_author),
                                   ),
                                 ],
                               )

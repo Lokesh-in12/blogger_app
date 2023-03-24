@@ -1,8 +1,10 @@
 import 'package:blogger_app/core/consts/styles/app_style.dart';
+import 'package:blogger_app/core/routes/app_route_constants.dart';
 import 'package:blogger_app/src/controllers/auth_controller/auth_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class MyDrawer extends StatelessWidget {
   MyDrawer({super.key});
@@ -17,8 +19,8 @@ class MyDrawer extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Hello, Lokesh",
+            Text(
+              authcontroller.auth.currentUser?.email!.split("@")[0].toString() ?? "",
               style: ThemeText.heading2,
             ),
             const SizedBox(
@@ -85,7 +87,10 @@ class MyDrawer extends StatelessWidget {
               height: 25,
             ),
             InkWell(
-              onTap: ()=> authcontroller.logOut(context),
+              onTap: () {
+                authcontroller.logOut(context);
+                context.goNamed(AppRouteConsts.signIn);
+              },
               child: Row(
                 children: const [
                   Icon(Icons.login_outlined),

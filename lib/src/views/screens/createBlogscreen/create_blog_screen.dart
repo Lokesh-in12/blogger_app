@@ -11,30 +11,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // ignore: must_be_immutable
-class CreateBlogScreen extends StatefulWidget {
+class CreateBlogScreen extends StatelessWidget {
   String? id;
   CreateBlogScreen({super.key, this.id});
 
-  @override
-  State<CreateBlogScreen> createState() => _CreateBlogScreenState();
-}
-
-class _CreateBlogScreenState extends State<CreateBlogScreen> {
   final blogsController = Get.find<BlogsController>();
   final _formKey = GlobalKey<FormState>();
-
-  @override
-  void dispose() {
-    super.dispose();
-    blogsController.title.clear();
-    blogsController.desc.clear();
-    blogsController.removeUploadedImg();
-  }
 
   @override
   Widget build(BuildContext context) {

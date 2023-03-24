@@ -1,5 +1,6 @@
 import 'package:blogger_app/core/routes/app_route_constants.dart';
 import 'package:blogger_app/src/controllers/auth_controller/auth_controller.dart';
+import 'package:blogger_app/src/controllers/blogs_controller/blogs_controller.dart';
 import 'package:blogger_app/src/views/screens/profilescreen/widgets/followers_info.dart';
 import 'package:blogger_app/src/views/screens/profilescreen/widgets/user_options.dart';
 import 'package:blogger_app/src/views/widgets/blog_card_horiz/blog_card_horiz.dart';
@@ -13,15 +14,28 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:blogger_app/src/views/screens/homescreen/widgets/blog_cards.dart';
 
 // ignore: must_be_immutable
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   String? id;
   ProfileScreen({super.key, this.id});
 
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   final authController = Get.find<AuthController>();
+
+  final blogsController = Get.find<BlogsController>();
+
+  @override
+  void initState() {
+    super.initState();
+    blogsController.getUsersBlog();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Obx(() => Scaffold(
         appBar: AppBar(
           backgroundColor: ThemeColor.white,
           elevation: 0.0,
@@ -49,9 +63,10 @@ class ProfileScreen extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        const CircleAvatar(
+                        CircleAvatar(
                           radius: 40,
-                          backgroundImage: NetworkImage(
+                          backgroundImage: NetworkImage(authController
+                                  .auth.currentUser!.photoURL ??
                               "https://images.unsplash.com/photo-1679412330231-4a049ffd294b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80"),
                         ),
                         const SizedBox(
@@ -99,7 +114,7 @@ class ProfileScreen extends StatelessWidget {
                       children: [
                         FollowerInfo(
                           title: "Blogs",
-                          num: "15",
+                          num: blogsController.usersBlog.length.toString(),
                         ),
                         FollowerInfo(
                           title: "Followers",
@@ -145,16 +160,17 @@ class ProfileScreen extends StatelessWidget {
                         style: GoogleFonts.montserrat(
                             textStyle: const TextStyle(fontSize: 20)),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: 5,
+                        itemCount: blogsController.usersBlog.length,
                         itemBuilder: (context, index) {
                           return BlogCardsHoriz(
                             user: true,
+                            e: blogsController.usersBlog[index],
                           );
                         },
                       ),
@@ -170,6 +186,6 @@ class ProfileScreen extends StatelessWidget {
           onPressed: () => context.pushNamed(AppRouteConsts.createBlog,
               params: {"id": "${authController.auth.currentUser!.uid}"}),
           child: Icon(Icons.post_add),
-        ));
+        )));
   }
 }

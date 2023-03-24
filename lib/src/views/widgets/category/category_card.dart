@@ -33,7 +33,11 @@ class CategoryCard extends StatelessWidget {
                   ),
                 )
               : Center(
-                  child: Text(title.toString()),
+                  child: Text(
+                    title.toString(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 )),
     );
   }

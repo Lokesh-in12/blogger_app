@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class BlogModel {
   String? id;
   String? authorId;
@@ -24,7 +26,7 @@ class BlogModel {
       this.likes,
       this.id});
 
-  BlogModel.fromJson(Map<String, dynamic> json) {
+  BlogModel.fromJson(QueryDocumentSnapshot<Map<String, dynamic>> json) {
     id = json['id'];
     authorId = json['authorId'];
     authorName = json['authorName'];

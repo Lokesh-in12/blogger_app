@@ -24,25 +24,53 @@ class BlogsController extends GetxController {
 
   final Reference storageReference =
       FirebaseStorage.instance.ref().child('Blogs_Images');
+  final _dbRef = FirebaseFirestore.instance;
+
+  //Variables for storing blogs
+  final AllBlogs = <BlogModel>[].obs;
+
+  //users blogs
+  final usersBlog = <BlogModel>[].obs;
+
+  final singleBlog = <BlogModel>[].obs;
+
+  void handleSingleBlog(String id) {
+    singleBlog.value = [AllBlogs.firstWhere((element) => element.id == id)];
+  }
+
+  void fetchAllBlogs() async {
+    print("in detchAllBlogs");
+    try {
+      QuerySnapshot<Map<String, dynamic>> res =
+          await _dbRef.collection("blogs").get();
+      List listData = res.docs;
+
+      List<BlogModel> allBlogss =
+          listData.map((e) => BlogModel.fromJson(e)).toList();
+      AllBlogs.value = allBlogss;
+
+      print("data in [] => $AllBlogs");
+    } catch (e) {
+      print("error in fetchAllBlogs ==> $e");
+    }
+  }
+
+  void getUsersBlog() {
+    print("runnnnnn ${usersBlog.length}");
+    Future.delayed(Duration.zero, () {
+      usersBlog.value = AllBlogs.takeWhile(
+          (element) => element.authorId == _auth.currentUser!.uid).toList();
+      print("runnnnnn ${usersBlog.length}");
+    });
+  }
 
   void setCategory(val) {
     category.value = val;
   }
 
-  // void handleMultipleImages(images) {
-  //   for (var i = 0; i < images.length; i++) {
-  //     // ImageFile imageFile = images[i];
-  //     File file = File("${images[i]}");
-  //     print(file.runtimeType);
-  //     uplodadTask(file);
-  //   }
-  // }
-
   void uplodadTask() {
     print("in uplodadTask");
   }
-
-  final _dbRef = FirebaseFirestore.instance;
 
   void postBlog(BuildContext ctx) async {
     String uniqueId = await nanoid(7);
@@ -65,7 +93,8 @@ class BlogsController extends GetxController {
                 postDate: DateTime.now().toLocal().toString(),
                 id: uniqueId),
             uniqueId);
-        ctx.pop();
+        ctx.pushNamed(AppRouteConsts.profile,
+            params: {"id": _auth.currentUser!.uid.toString()});
       });
     });
   }

@@ -1,3 +1,5 @@
+import 'package:blogger_app/core/utils/helpers/time_formatter.dart';
+import 'package:blogger_app/src/models/blog_model/blog_model.dart';
 import 'package:blogger_app/src/views/widgets/category/sm_category_card.dart';
 import 'package:blogger_app/core/consts/styles/app_style.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,7 +7,8 @@ import 'package:flutter/material.dart';
 
 class BlogCardsHoriz extends StatelessWidget {
   bool? user;
-  BlogCardsHoriz({super.key, this.user});
+  BlogModel? e;
+  BlogCardsHoriz({super.key, this.user, this.e});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,8 @@ class BlogCardsHoriz extends StatelessWidget {
                   width: 120,
                   height: 120,
                   child: Image.network(
-                    "https://images.unsplash.com/photo-1503220317375-aaad61436b1b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+                    e?.images ??
+                        "https://images.unsplash.com/photo-1503220317375-aaad61436b1b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -51,8 +55,8 @@ class BlogCardsHoriz extends StatelessWidget {
                             padding: const EdgeInsets.only(top: 5),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
-                              children: const [
-                                CircleAvatar(
+                              children: [
+                                const CircleAvatar(
                                     radius: 10,
                                     backgroundImage: NetworkImage(
                                         "https://images.unsplash.com/photo-1679381457571-ade79f46c61c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80")),
@@ -62,7 +66,8 @@ class BlogCardsHoriz extends StatelessWidget {
                                 SizedBox(
                                   width: 80,
                                   child: Text(
-                                    "dsgefksheugsigafesgeswgrg",
+                                    e?.authorName ??
+                                        "dsgefksheugsigafesgeswgrg",
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -73,10 +78,11 @@ class BlogCardsHoriz extends StatelessWidget {
                     const SizedBox(
                       height: 7,
                     ),
-                    const SizedBox(
+                    SizedBox(
                         width: 210,
                         child: Text(
-                          "It's Been 20 Years Since We Invaded Iraq .I Am Still in the Desert ",
+                          e?.title ??
+                              "It's Been 20 Years Since We Invaded Iraq .I Am Still in the Desert ",
                           style: ThemeText.allBlogsTitle,
                         )),
                     const SizedBox(
@@ -88,12 +94,14 @@ class BlogCardsHoriz extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
-                            children: const [
-                              Text("Mar 14"),
-                              SizedBox(
+                            children: [
+                              Text(e?.postDate != null
+                                  ? getPostTimeFormatted(e!.postDate.toString())
+                                  : "2d ago"),
+                              const SizedBox(
                                 width: 10,
                               ),
-                              SmCategoryCard(),
+                              SmCategoryCard(title: e!.category.toString()),
                             ],
                           ),
                           InkWell(
