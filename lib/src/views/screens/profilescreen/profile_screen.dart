@@ -71,7 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         CircleAvatar(
                           radius: 40,
                           backgroundImage: NetworkImage(authController
-                                  .googleAccount.value!.photoUrl ??
+                                  .googleAccount.value?.photoUrl ??
                               "https://images.unsplash.com/photo-1679412330231-4a049ffd294b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80"),
                         ),
                         const SizedBox(
@@ -192,8 +192,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: ThemeColor.blackBasic,
-          onPressed: () => context.pushNamed(AppRouteConsts.createBlog,
-              params: {"id": "${authController.auth.currentUser!.uid}"}),
+          onPressed: () =>
+              context.pushNamed(AppRouteConsts.createBlog, params: {
+            "id":
+                "${authController.auth.currentUser?.uid ?? authController.googleAccount.value!.id}"
+          }),
           child: Icon(Icons.post_add),
         )));
   }

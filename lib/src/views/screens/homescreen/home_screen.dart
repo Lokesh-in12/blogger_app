@@ -36,7 +36,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (kDebugMode) {}
+    if (kDebugMode) {
+      print("prefernce is ${authcontroller.getPref()}");
+    }
     return Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
@@ -230,8 +232,11 @@ class _HomeScreenState extends State<HomeScreen> {
         }),
         floatingActionButton: FloatingActionButton(
           backgroundColor: ThemeColor.blackBasic,
-          onPressed: () => context.pushNamed(AppRouteConsts.createBlog,
-              params: {"id": "${authcontroller.auth.currentUser!.uid}"}),
+          onPressed: () =>
+              context.pushNamed(AppRouteConsts.createBlog, params: {
+            "id":
+                "${authcontroller.auth.currentUser?.uid ?? authcontroller.googleAccount.value!.id}"
+          }),
           child: Icon(Icons.post_add),
         ));
   }

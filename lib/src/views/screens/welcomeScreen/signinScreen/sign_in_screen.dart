@@ -4,6 +4,7 @@ import 'package:blogger_app/core/themes/themes.dart';
 import 'package:blogger_app/src/controllers/auth_controller/auth_controller.dart';
 import 'package:blogger_app/src/controllers/blogs_controller/blogs_controller.dart';
 import 'package:blogger_app/src/controllers/sign_in_controller/sign_in_controller.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -18,6 +19,9 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (kDebugMode) {
+      print("prefernce in signin screen ${authController.getPref()}");
+    }
     return Obx(() => Scaffold(
           body: SafeArea(
             child: Column(
@@ -174,7 +178,7 @@ class SignInScreen extends StatelessWidget {
                                 ),
                                 InkWell(
                                   onTap: () async {
-                                    await authController.login();
+                                    await authController.googleLoin();
                                     if (authController.googleAccount.value !=
                                         null) {
                                       context.goNamed(AppRouteConsts.home);
