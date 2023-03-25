@@ -39,6 +39,7 @@ class _SingleBlogPageState extends State<SingleBlogPage> {
       body: SafeArea(
           child: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(
               children: [
@@ -76,34 +77,39 @@ class _SingleBlogPageState extends State<SingleBlogPage> {
                               ),
                               label: const Text("")),
                         ),
-                        SizedBox(
-                          width: 250,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: 100,
-                                child:
-                                    SmCategoryCard(title: singleBlog.category),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                singleBlog.title.toString(),
-                                style: ThemeText.singleBlogHeading,
-                              ),
-                            ],
-                          ),
-                        )
                       ],
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(
+            SizedBox(
               height: 10,
+            ),
+            SizedBox(
+              width: 280,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 100,
+                      child: SmCategoryCard(title: singleBlog.category),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      singleBlog.title.toString(),
+                      style: ThemeText.singleBlogHeading,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 15,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),

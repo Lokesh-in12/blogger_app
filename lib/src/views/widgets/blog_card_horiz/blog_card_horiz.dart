@@ -44,98 +44,102 @@ class BlogCardsHoriz extends StatelessWidget {
                   const SizedBox(
                     width: 15,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      user!
-                          ? SizedBox(
-                              width: 230,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: const [
-                                  Icon(Icons.more_horiz_rounded)
-                                ],
-                              ),
-                            )
-                          : Padding(
-                              padding: const EdgeInsets.only(top: 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  const CircleAvatar(
-                                      radius: 10,
-                                      backgroundImage: NetworkImage(
-                                          "https://images.unsplash.com/photo-1679381457571-ade79f46c61c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80")),
-                                  SizedBox(
-                                    width: 7,
-                                  ),
-                                  SizedBox(
-                                    width: 80,
-                                    child: Text(
-                                      e?.authorName ??
-                                          "dsgefksheugsigafesgeswgrg",
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
+                  SizedBox(
+                    width: 220,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        user!
+                            ? SizedBox(
+                                width: 230,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: const [
+                                    Icon(Icons.more_horiz_rounded)
+                                  ],
+                                ),
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.only(top: 5),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    const CircleAvatar(
+                                        radius: 10,
+                                        backgroundImage: NetworkImage(
+                                            "https://images.unsplash.com/photo-1679381457571-ade79f46c61c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80")),
+                                    SizedBox(
+                                      width: 7,
                                     ),
-                                  )
-                                ],
+                                    SizedBox(
+                                      width: 80,
+                                      child: Text(
+                                        e?.authorName ??
+                                            "dsgefksheugsigafesgeswgrg",
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                      const SizedBox(
-                        height: 7,
-                      ),
-                      SizedBox(
-                          width: 210,
+                        const SizedBox(
+                          height: 7,
+                        ),
+                        SizedBox(
+                            width: 210,
+                            child: Text(
+                              e?.title ??
+                                  "It's Been 20 Years Since We Invaded Iraq .I Am Still in the Desert ",
+                              style: ThemeText.allBlogsTitle,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            )),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        SizedBox(
+                          width: 200,
                           child: Text(
-                            e?.title ??
-                                "It's Been 20 Years Since We Invaded Iraq .I Am Still in the Desert ",
-                            style: ThemeText.allBlogsTitle,
+                            e?.desc.toString() ??
+                                "This is a sample description",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                          )),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      SizedBox(
-                        width: 200,
-                        child: Text(
-                          e?.desc.toString() ?? "This is a sample description",
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontSize: 12),
+                            style: TextStyle(fontSize: 12),
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 17,
-                      ),
-                      SizedBox(
-                        width: 230,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Text(e?.postDate != null
-                                    ? getPostTimeFormatted(
-                                        e!.postDate.toString())
-                                    : "2d ago"),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                SmCategoryCard(title: e!.category.toString()),
-                              ],
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: const Icon(
-                                CupertinoIcons.bookmark,
-                                size: 17,
+                        const SizedBox(
+                          height: 17,
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(e?.postDate != null
+                                      ? getPostTimeFormatted(
+                                          e!.postDate.toString())
+                                      : "2d ago"),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  SmCategoryCard(title: e!.category.toString()),
+                                ],
                               ),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
+                              InkWell(
+                                onTap: () {},
+                                child: const Icon(
+                                  CupertinoIcons.bookmark,
+                                  size: 17,
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   )
                 ],
               ),

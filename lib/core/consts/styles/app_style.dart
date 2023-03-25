@@ -8,11 +8,11 @@ abstract class ThemeText {
       fontWeight: FontWeight.w600,
       color: ThemeColor.blackBasic);
 
-      //blogs for you title
+  //blogs for you title
 
-      static const TextStyle blogsForYou = TextStyle(
+  static const TextStyle blogsForYou = TextStyle(
       fontSize: 15, fontWeight: FontWeight.w400, color: ThemeColor.blackBasic);
-      static const TextStyle blogs_author = TextStyle(
+  static const TextStyle blogs_author = TextStyle(
       fontSize: 12, fontWeight: FontWeight.w400, color: ThemeColor.blackBasic);
 
   static const TextStyle heading2 = TextStyle(
@@ -65,11 +65,8 @@ abstract class ThemeText {
   //blogSingle
 
   static const TextStyle singleBlogHeading =
-      TextStyle(fontSize: 35, color: ThemeColor.white);
+      TextStyle(fontSize: 28, color: ThemeColor.blackBasic);
 
   static const TextStyle blogDescStyle =
       TextStyle(fontSize: 20, letterSpacing: 1, color: ThemeColor.blackBasic);
-
-
-
 }
