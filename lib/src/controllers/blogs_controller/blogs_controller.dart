@@ -41,9 +41,27 @@ class BlogsController extends GetxController {
 
   final Category = <BlogModel>[].obs;
 
+  final userBookMarks = <BlogModel>[].obs;
+
+  Future<void> addToBookMarks(String id) async {}
+
+  Future<void> removeBlog(String id) async {
+    try {
+      isLoading(true);
+      await _dbRef.collection('blogs').doc(id).delete();
+      await fetchAllBlogs();
+      await getUsersBlog();
+    } catch (e) {
+      print("err in removeBlog =>> $e");
+    } finally {
+      isLoading(false);
+    }
+  }
+
   Future<void> fetchSelectedCategory(String category) async {
     Category.value =
-        AllBlogs.where((element) => element.category == category).toList();
+        await AllBlogs.where((element) => element.category == category)
+            .toList();
     print(Category.length);
   }
 

@@ -79,10 +79,8 @@ class AuthController extends GetxController {
     // user == null ? isLoggedIn.value = false : isLoggedIn.value = true;
     if(user == null){
       isLoggedIn(false);
-      Get.offAllNamed(AppRouteConsts.signIn);
     }else{
       isLoggedIn(true);
-      Get.offAllNamed(AppRouteConsts.home);
     }
   }
 

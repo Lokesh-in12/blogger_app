@@ -12,6 +12,7 @@ import 'package:blogger_app/core/themes/themes.dart';
 import 'package:blogger_app/core/consts/styles/app_style.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:blogger_app/src/views/screens/homescreen/widgets/blog_cards.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 // ignore: must_be_immutable
 class ProfileScreen extends StatefulWidget {
@@ -168,17 +169,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const SizedBox(
                         height: 15,
                       ),
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: blogsController.usersBlog.length,
-                        itemBuilder: (context, index) {
-                          return BlogCardsHoriz(
-                            user: true,
-                            e: blogsController.usersBlog[index],
+                      Obx(() {
+                        if (blogsController.isLoading.value) {
+                          return Center(
+                            child: LoadingAnimationWidget.fourRotatingDots(
+                                color: ThemeColor.blackBasic, size: 40),
                           );
-                        },
-                      ),
+                        }
+                        return ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: blogsController.usersBlog.length,
+                          itemBuilder: (context, index) {
+                            return BlogCardsHoriz(
+                              user: true,
+                              e: blogsController.usersBlog[index],
+                            );
+                          },
+                        );
+                      }),
                     ],
                   ),
                 ],

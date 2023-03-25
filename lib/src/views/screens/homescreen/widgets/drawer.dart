@@ -94,13 +94,13 @@ class MyDrawer extends StatelessWidget {
             ),
             InkWell(
               onTap: () async {
+                context.goNamed(AppRouteConsts.signIn);
                 if (authcontroller.googleAccount.value == null) {
                   await authcontroller.logOutEmail(context);
                 } else {
                   await authcontroller.googleLogout();
                 }
                 // ignore: use_build_context_synchronously
-                context.goNamed(AppRouteConsts.signIn);
               },
               child: Row(
                 children: const [

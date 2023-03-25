@@ -10,8 +10,8 @@ class BlogModel {
   String? desc;
   String? category;
   String? images;
-  List<String>? bookmarkedBy;
-  List<String>? likes;
+  List<dynamic>? bookmarkedBy;
+  List<dynamic>? likes;
 
   BlogModel(
       {this.authorId,

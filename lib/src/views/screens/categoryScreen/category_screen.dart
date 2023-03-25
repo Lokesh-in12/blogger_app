@@ -58,7 +58,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
           elevation: 0.0,
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: SingleChildScrollView(
             child: Column(
               children: [

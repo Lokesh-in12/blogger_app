@@ -1,5 +1,6 @@
 import 'package:blogger_app/core/consts/responsive_breakpoints/responsive_breakpoints.dart';
 import 'package:blogger_app/core/routes/app_route_constants.dart';
+import 'package:blogger_app/core/utils/helpers/alert_dialogue.dart';
 import 'package:blogger_app/core/utils/helpers/time_formatter.dart';
 import 'package:blogger_app/src/models/blog_model/blog_model.dart';
 import 'package:blogger_app/src/views/widgets/category/sm_category_card.dart';
@@ -59,13 +60,24 @@ class BlogCardsHoriz extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           user!
-                              ? SizedBox(
-                                  width: 230,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: const [
-                                      Icon(Icons.more_horiz_rounded)
-                                    ],
+                              ? InkWell(
+                                  onTap: () async {
+                                    print("in here");
+                                    await ShowCustomAlert(context,
+                                        "Are you sure?", e!.id.toString());
+                                    print("in hsdvdsve");
+                                  },
+                                  child: SizedBox(
+                                    width: 230,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Icon(
+                                          CupertinoIcons.delete,
+                                          size: 20,
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 )
                               : Padding(
