@@ -19,9 +19,6 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (kDebugMode) {
-      print("prefernce in signin screen ${authController.getPref()}");
-    }
     return Obx(() => Scaffold(
           body: SafeArea(
             child: Column(

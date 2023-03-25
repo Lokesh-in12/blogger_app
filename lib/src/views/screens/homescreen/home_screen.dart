@@ -36,9 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (kDebugMode) {
-      print("prefernce is ${authcontroller.getPref()}");
-    }
     return Scaffold(
         key: scaffoldKey,
         appBar: AppBar(

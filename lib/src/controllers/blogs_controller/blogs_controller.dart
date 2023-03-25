@@ -39,6 +39,13 @@ class BlogsController extends GetxController {
   //singleBlog
   final singleBlog = <BlogModel>[].obs;
 
+  final Category = <BlogModel>[].obs;
+
+  Future<void> fetchSelectedCategory(String category) async {
+    Category.value =
+        AllBlogs.where((element) => element.category == category).toList();
+  }
+
   Future<void> handleSingleBlog(String id) async {
     singleBlog.value = AllBlogs.where((element) => element.id == id).toList();
   }

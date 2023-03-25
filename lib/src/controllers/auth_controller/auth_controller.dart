@@ -19,17 +19,6 @@ class AuthController extends GetxController {
   RxBool isLoggedIn = false.obs;
   FirebaseAuth get auth => _auth;
 
-  Future<void> setPreference() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("id", "2343455346");
-  }
-
-  Future<bool?> getPref() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? id = prefs.containsKey("id");
-    return id;
-  }
-
   Future<void> removePref() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
@@ -42,8 +31,7 @@ class AuthController extends GetxController {
   Future<void> googleLoin() async {
     try {
       googleAccount.value = await googleSignIn.signIn();
-      await isLoggedIn(true);
-      await setPreference();
+      isLoggedIn(true);
     } on FormatException catch (e) {
       Fluttertoast.showToast(
           msg: e.message,
@@ -74,17 +62,7 @@ class AuthController extends GetxController {
     super.onInit();
     firebaseUser = Rx<User?>(_auth.currentUser);
     firebaseUser.bindStream(_auth.userChanges());
-    googleSignIn.onCurrentUserChanged.listen((event) {});
     ever(firebaseUser, _setInitialScreen);
-    // if (googleAccount.value?.displayName != null) {
-    //   isLoggedIn(true);
-    // }
-    isSiggnedin();
-  }
-
-  Future<void> isSiggnedin() async {
-    bool isSiggnedin = await googleSignIn.isSignedIn();
-    isSiggnedin ? isLoggedIn.value = true : isLoggedIn.value = false;
   }
 
   void _setInitialScreen(User? user) {
@@ -163,7 +141,6 @@ class AuthController extends GetxController {
           textColor: Colors.white,
           fontSize: 16.0);
       // ignore: use_build_context_synchronously
-      await setPreference();
       ctx.goNamed(AppRouteConsts.home);
       isLoggedIn.value = true;
       return true;

@@ -52,7 +52,6 @@ class _SingleBlogPageState extends State<SingleBlogPage> {
                           fit: BoxFit.cover,
                         )
                       : Image.network(
-                          filterQuality: FilterQuality.low,
                           "https://images.unsplash.com/photo-1679458118229-6ac5b35757d4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80",
                           fit: BoxFit.cover,
                         ),

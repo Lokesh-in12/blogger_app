@@ -13,7 +13,8 @@ class MyDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("current User is=>>> ${authcontroller.googleAccount.value}");
+    print(
+        "current User is=>>> ${authcontroller.googleAccount.value?.displayName ?? authcontroller.auth.currentUser?.displayName}");
     return Drawer(
       child: Padding(
         padding: const EdgeInsets.only(left: 30, top: 60),

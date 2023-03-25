@@ -6,4 +6,5 @@ class AppRouteConsts {
   static const String signUp = "signUp";
   static const String profile = "profile";
   static const String createBlog = "createBlog";
+  static const String category = "category";
 }

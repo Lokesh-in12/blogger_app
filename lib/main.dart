@@ -28,7 +28,8 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       routerConfig: MyAppRouterConfig.returnRouter(
-          authController.isLoggedIn.value, authController.googleAccount.value , authController.getPref()),
+        authController.isLoggedIn.value,
+      ),
     );
   }
 }

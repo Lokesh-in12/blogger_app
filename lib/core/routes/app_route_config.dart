@@ -1,3 +1,5 @@
+import 'package:blogger_app/src/controllers/auth_controller/auth_controller.dart';
+import 'package:blogger_app/src/views/screens/categoryScreen/category_screen.dart';
 import 'package:blogger_app/src/views/screens/createBlogscreen/create_blog_screen.dart';
 import 'package:blogger_app/src/views/screens/homescreen/home_screen.dart';
 import 'package:blogger_app/src/views/screens/profilescreen/profile_screen.dart';
@@ -12,17 +14,16 @@ import 'app_route_constants.dart';
 import 'package:go_router/go_router.dart';
 
 class MyAppRouterConfig {
-  static GoRouter returnRouter(
-      bool isLoggedIn, GoogleSignInAccount? account, Future<bool?> isKey) {
+  static GoRouter returnRouter(bool isLoggedIn) {
+    final authController = Get.find<AuthController>();
     print("fsfesfef=>> $isLoggedIn");
-    print("isKey=>> ${isKey}");
+    print("google account => ${authController.googleAccount.value}");
     GoRouter router = GoRouter(
         initialLocation: '/signIn',
         // initialLocation: '/createBlog/:id',
         // initialLocation: '/welcomePage',
         redirect: (context, state) async {
-          if (isLoggedIn &&
-              state.location.startsWith('/signIn')) {
+          if (isLoggedIn && state.location.startsWith('/signIn')) {
             return '/';
           } else {
             return null;
@@ -51,6 +52,12 @@ class MyAppRouterConfig {
                   name: AppRouteConsts.createBlog,
                   builder: (context, state) =>
                       CreateBlogScreen(id: state.params['id']!),
+                ),
+                GoRoute(
+                  path: 'category/:category',
+                  name: AppRouteConsts.category,
+                  builder: (context, state) =>
+                      CategoryScreen(category: state.params['category']!),
                 ),
               ]),
           GoRoute(
