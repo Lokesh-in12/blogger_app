@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:nanoid/async.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends GetxController {
@@ -29,9 +30,17 @@ class AuthController extends GetxController {
   final googleAccount = Rx<GoogleSignInAccount?>(null);
 
   Future<void> googleLoin() async {
+    String uniqueId = await nanoid(7);
     try {
       googleAccount.value = await googleSignIn.signIn();
       isLoggedIn(true);
+
+      UserModel data = UserModel(
+          email: googleAccount.value!.email,
+          id: uniqueId,
+          username: googleAccount.value!.displayName);
+
+      await _dbRef.collection('Users').doc(uniqueId).set(data.toJson());
     } on FormatException catch (e) {
       Fluttertoast.showToast(
           msg: e.message,
@@ -67,7 +76,14 @@ class AuthController extends GetxController {
 
   void _setInitialScreen(User? user) {
     print("_setInitialScreen ran");
-    user == null ? isLoggedIn.value = false : isLoggedIn.value = true;
+    // user == null ? isLoggedIn.value = false : isLoggedIn.value = true;
+    if(user == null){
+      isLoggedIn(false);
+      Get.offAllNamed(AppRouteConsts.signIn);
+    }else{
+      isLoggedIn(true);
+      Get.offAllNamed(AppRouteConsts.home);
+    }
   }
 
   Future<bool?> createUserWithEmailAndPass(String email, String password,

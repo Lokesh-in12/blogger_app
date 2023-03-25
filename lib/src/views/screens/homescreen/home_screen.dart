@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               'Blogs for you',
                               style: ThemeText.Heading2,
                             ),

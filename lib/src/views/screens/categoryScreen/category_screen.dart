@@ -57,19 +57,25 @@ class _CategoryScreenState extends State<CategoryScreen> {
           backgroundColor: ThemeColor.white,
           elevation: 0.0,
         ),
-        body: Column(
-          children: [
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: blogsController.Category.length,
-              itemBuilder: (context, index) {
-                return BlogCardsHoriz(
-                  user: false,
-                  e: blogsController.Category[index],
-                );
-              },
-            )
-          ],
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: blogsController.Category.length,
+                  itemBuilder: (context, index) {
+                    return BlogCardsHoriz(
+                      user: false,
+                      e: blogsController.Category[index],
+                    );
+                  },
+                )
+              ],
+            ),
+          ),
         ),
       );
     });

@@ -53,6 +53,8 @@ class BlogCards extends StatelessWidget {
                       child: Center(
                           child: Text(
                         e?.category.toString() ?? "No Category",
+                        maxLines: 1,
+                        overflow: TextOverflow.clip,
                         style: ThemeText.cardCategoryBlog,
                       )),
                     ),
