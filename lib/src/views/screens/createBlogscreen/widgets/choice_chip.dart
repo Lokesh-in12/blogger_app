@@ -19,7 +19,7 @@ class CategoryChoiceChip extends StatelessWidget {
       backgroundColor: ThemeColor.lightGrey,
       label: Text(
         category.toString(),
-        style: GoogleFonts.montserrat(textStyle: const TextStyle(fontSize: 15)),
+        style: const TextStyle(fontSize: 15),
       ),
       selected: false,
       onSelected: (value) {

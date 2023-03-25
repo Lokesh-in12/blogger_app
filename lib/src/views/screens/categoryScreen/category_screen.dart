@@ -17,6 +17,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
   final blogsController = Get.find<BlogsController>();
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    blogsController.Category.clear();
+  }
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -30,17 +37,26 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (blogsController.Category.length == 0) {
-        Scaffold(
+      if (blogsController.Category.isEmpty) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(widget.category!),
+            backgroundColor: ThemeColor.white,
+            foregroundColor: ThemeColor.blackBasic,
+            elevation: 0.0,
+          ),
           body: SafeArea(
-              // child: Center(child: Text("No Blogs for ${widget.category}"))),
-              child: Center(
-                  child: LoadingAnimationWidget.fourRotatingDots(
-                      color: ThemeColor.blackBasic, size: 40))),
+              child: Center(child: Text("No Blogs for ${widget.category}"))),
         );
       }
       return Scaffold(
-        appBar: AppBar(title: Text(widget.category!)),
+        backgroundColor: ThemeColor.white,
+        appBar: AppBar(
+          title: Text(widget.category!),
+          foregroundColor: ThemeColor.blackBasic,
+          backgroundColor: ThemeColor.white,
+          elevation: 0.0,
+        ),
         body: Column(
           children: [
             ListView.builder(

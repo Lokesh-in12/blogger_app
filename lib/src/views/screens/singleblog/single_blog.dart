@@ -81,7 +81,11 @@ class _SingleBlogPageState extends State<SingleBlogPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SmCategoryCard(title: singleBlog.category),
+                              SizedBox(
+                                width: 100,
+                                child:
+                                    SmCategoryCard(title: singleBlog.category),
+                              ),
                               SizedBox(
                                 height: 10,
                               ),

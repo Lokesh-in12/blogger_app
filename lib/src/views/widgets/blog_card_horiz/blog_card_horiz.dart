@@ -22,7 +22,7 @@ class BlogCardsHoriz extends StatelessWidget {
               params: {"id": e!.id.toString()}),
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: 130,
+            height: 120,
             child: DecoratedBox(
               decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 243, 243, 242),
@@ -32,10 +32,13 @@ class BlogCardsHoriz extends StatelessWidget {
                   SizedBox(
                     width: 120,
                     height: 120,
-                    child: Image.network(
-                      e?.images ??
-                          "https://images.unsplash.com/photo-1503220317375-aaad61436b1b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
-                      fit: BoxFit.fill,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: Image.network(
+                        e?.images ??
+                            "https://images.unsplash.com/photo-1503220317375-aaad61436b1b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -87,9 +90,23 @@ class BlogCardsHoriz extends StatelessWidget {
                             e?.title ??
                                 "It's Been 20 Years Since We Invaded Iraq .I Am Still in the Desert ",
                             style: ThemeText.allBlogsTitle,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           )),
                       const SizedBox(
-                        height: 18,
+                        height: 5,
+                      ),
+                      SizedBox(
+                        width: 200,
+                        child: Text(
+                          e?.desc.toString() ?? "This is a sample description",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontSize: 12),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 17,
                       ),
                       SizedBox(
                         width: 230,

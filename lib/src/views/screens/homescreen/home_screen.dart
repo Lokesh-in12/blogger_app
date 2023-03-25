@@ -98,12 +98,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             Text(
                               'Blogs for you',
-                              style: GoogleFonts.montserrat(
-                                  textStyle: ThemeText.Heading2),
+                              style: ThemeText.Heading2,
                             ),
                             //blog cards
                             SizedBox(
-                              height: 300,
+                              height: 350,
                               child: ListView.builder(
                                 itemCount: blogsController.AllBlogs.reversed
                                     .take(5)
@@ -112,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 itemBuilder: (context, index) {
                                   return BlogCards(
                                     boxWidth: 280,
-                                    boxHeight: 290,
+                                    boxHeight: 320,
                                     e: blogsController.AllBlogs.reversed
                                         .take(5)
                                         .toList()[index],

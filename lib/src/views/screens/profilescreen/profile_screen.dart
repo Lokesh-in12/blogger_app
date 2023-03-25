@@ -91,8 +91,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     authController.auth.currentUser!.email!
                                         .split("@")[0]
                                         .toString(),
-                                style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(fontSize: 27)),
+                                style: const TextStyle(fontSize: 27),
                               ),
                             ),
                             const SizedBox(
@@ -102,11 +101,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               width: 200,
                               child: Text(
                                 "What would you dream if you knew you couldn't fail!",
-                                style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
-                                        fontSize: 15,
-                                        color: Color.fromARGB(
-                                            255, 153, 153, 153))),
+                                style: const TextStyle(
+                                    fontSize: 15,
+                                    color: Color.fromARGB(255, 153, 153, 153)),
                               ),
                             ),
                           ],
@@ -166,8 +163,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       //User Blogs
                       Text(
                         "Your Blogs",
-                        style: GoogleFonts.montserrat(
-                            textStyle: const TextStyle(fontSize: 20)),
+                        style: const TextStyle(fontSize: 20),
                       ),
                       const SizedBox(
                         height: 15,

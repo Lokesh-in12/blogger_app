@@ -36,8 +36,8 @@ class BlogCards extends StatelessWidget {
                       child: Image.network(
                         e?.images.toString() ??
                             "https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1380&q=80",
-                        fit: BoxFit.fill,
-                        height: 200,
+                        fit: BoxFit.cover,
+                        height: 230,
                       ),
                     ),
                   ),
@@ -72,8 +72,7 @@ class BlogCards extends StatelessWidget {
                                 e?.title.toString() ??
                                     "The principles of Design Thinking",
                                 maxLines: 1,
-                                style: GoogleFonts.montserrat(
-                                    textStyle: ThemeText.blogsForYou),
+                                style: ThemeText.blogsForYou,
                               )),
                           const SizedBox(
                             height: 10,
@@ -97,15 +96,13 @@ class BlogCards extends StatelessWidget {
                                 children: [
                                   Text(
                                     e?.authorName ?? "Ava Martinez",
-                                    style: GoogleFonts.montserrat(
-                                        textStyle: ThemeText.blogs_author),
+                                    style: ThemeText.blogs_author,
                                   ),
                                   Text(
                                     getPostTimeFormatted(
                                             e!.postTime.toString()) ??
                                         "",
-                                    style: GoogleFonts.montserrat(
-                                        textStyle: ThemeText.blogs_author),
+                                    style: ThemeText.blogs_author,
                                   ),
                                 ],
                               )

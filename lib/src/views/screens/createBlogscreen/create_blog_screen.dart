@@ -60,9 +60,8 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
                 },
                 child: Text(
                   "Post",
-                  style: GoogleFonts.montserrat(
-                      textStyle: const TextStyle(
-                          fontSize: 20, color: ThemeColor.blackBasic)),
+                  style: const TextStyle(
+                      fontSize: 20, color: ThemeColor.blackBasic),
                 ))
           ],
         ),
@@ -130,10 +129,9 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
                             maxLength: 100,
                             maxLengthEnforcement: MaxLengthEnforcement
                                 .truncateAfterCompositionEnds,
-                            style: GoogleFonts.montserrat(
-                                textStyle: const TextStyle(
+                            style: const TextStyle(
                               fontSize: 22,
-                            )),
+                            ),
                             decoration: const InputDecoration(
                               hintText: "+ Title for blog...",
                               focusedBorder: UnderlineInputBorder(
@@ -151,10 +149,9 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
                             maxLines: 20,
                             maxLengthEnforcement: MaxLengthEnforcement
                                 .truncateAfterCompositionEnds,
-                            style: GoogleFonts.montserrat(
-                                textStyle: const TextStyle(
+                            style: const TextStyle(
                               fontSize: 22,
-                            )),
+                            ),
                             decoration: const InputDecoration(
                               hintText: "+ Description...",
                               focusedBorder: UnderlineInputBorder(

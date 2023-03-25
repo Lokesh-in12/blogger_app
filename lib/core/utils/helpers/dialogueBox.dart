@@ -28,9 +28,7 @@ void DialogueBox(
                           onPressed: () => context.pop(),
                           child: Text(
                             "Cancel",
-                            style: GoogleFonts.montserrat(
-                                textStyle:
-                                    const TextStyle(color: ThemeColor.white)),
+                            style: const TextStyle(color: ThemeColor.white),
                           )),
                       TextButton(
                           style: TextButton.styleFrom(
@@ -38,9 +36,7 @@ void DialogueBox(
                           onPressed: () {},
                           child: Text(
                             "Done",
-                            style: GoogleFonts.montserrat(
-                                textStyle:
-                                    const TextStyle(color: ThemeColor.white)),
+                            style: const TextStyle(color: ThemeColor.white),
                           )),
                     ],
                   )
