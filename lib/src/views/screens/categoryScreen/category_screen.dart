@@ -20,7 +20,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    blogsController.Category.clear();
   }
 
   @override

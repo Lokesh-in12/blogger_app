@@ -19,15 +19,14 @@ class MyAppRouterConfig {
     print("fsfesfef=>> $isLoggedIn");
     print("google account => ${authController.googleAccount.value}");
     GoRouter router = GoRouter(
-        initialLocation: '/',
+        initialLocation: '/signIn',
         // initialLocation: '/createBlog/:id',
         // initialLocation: '/welcomePage',
         redirect: (context, state) async {
-          if (isLoggedIn && state.location.startsWith('/') ||
-              state.location.startsWith('/${AppRouteConsts.signIn}')) {
-            return null;
+          if (isLoggedIn && state.location.startsWith('/signIn')) {
+            return '/';
           } else {
-            return '/${AppRouteConsts.signIn}';
+            return null;
           }
         },
         routes: [

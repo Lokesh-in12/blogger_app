@@ -4,6 +4,7 @@ import 'package:blogger_app/core/routes/app_route_constants.dart';
 import 'package:blogger_app/core/themes/themes.dart';
 import 'package:blogger_app/src/controllers/auth_controller/auth_controller.dart';
 import 'package:blogger_app/src/models/blog_model/blog_model.dart';
+import 'package:blogger_app/src/views/widgets/toast/toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -119,7 +120,7 @@ class BlogsController extends GetxController {
         String uniqueImageName =
             DateTime.now().millisecondsSinceEpoch.toString();
 
-        final UploadTask uploadTask =
+        UploadTask uploadTask =
             storageReference.child(uniqueImageName).putFile(imgFile.value);
         await uploadTask.then((TaskSnapshot taskSnapshot) {
           taskSnapshot.ref.getDownloadURL().then((imgUrl) async {
@@ -140,6 +141,7 @@ class BlogsController extends GetxController {
                     id: uniqueId),
                 uniqueId);
             isLoading(false);
+            // ignore: use_build_context_synchronously
             ctx.goNamed(AppRouteConsts.profile, params: {
               "id": _auth.currentUser?.uid.toString() ??
                   authController.googleAccount.value!.id

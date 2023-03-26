@@ -1,11 +1,14 @@
+import 'package:bcrypt/bcrypt.dart';
 import 'package:blogger_app/core/exceptions/firebase_auth_exceptions.dart';
 import 'package:blogger_app/core/routes/app_route_constants.dart';
+import 'package:blogger_app/src/controllers/sign_in_controller/sign_in_controller.dart';
+import 'package:blogger_app/src/controllers/sign_up_controller/sign_up_controller.dart';
 import 'package:blogger_app/src/models/UserModel/user_model.dart';
+import 'package:blogger_app/src/views/widgets/toast/toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -13,6 +16,11 @@ import 'package:nanoid/async.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends GetxController {
+  //signInController
+  final signInController = Get.put(SignInController());
+  //signUpController
+  final signUpController = Get.put(SignUpController());
+
   //variables
   final _auth = FirebaseAuth.instance;
   final _dbRef = FirebaseFirestore.instance;
@@ -20,15 +28,22 @@ class AuthController extends GetxController {
   RxBool isLoggedIn = false.obs;
   FirebaseAuth get auth => _auth;
   RxBool isLoading = false.obs;
+  //googelOauthController
+  final googleSignIn = GoogleSignIn();
+  final googleAccount = Rx<GoogleSignInAccount?>(null);
+
+  @override
+  void onInit() {
+    super.onInit();
+    firebaseUser = Rx<User?>(_auth.currentUser);
+    firebaseUser.bindStream(_auth.userChanges());
+    ever(firebaseUser, _setInitialScreen);
+  }
 
   Future<void> removePref() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
   }
-
-  //googelOauthController
-  final googleSignIn = GoogleSignIn();
-  final googleAccount = Rx<GoogleSignInAccount?>(null);
 
   Future<void> googleLoin() async {
     String uniqueId = await nanoid(7);
@@ -43,14 +58,7 @@ class AuthController extends GetxController {
 
       await _dbRef.collection('Users').doc(uniqueId).set(data.toJson());
     } on FormatException catch (e) {
-      Fluttertoast.showToast(
-          msg: e.message,
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP_RIGHT,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      await customToast(e.message, true);
     }
   }
 
@@ -58,158 +66,122 @@ class AuthController extends GetxController {
     googleAccount.value = await googleSignIn.signOut();
     isLoggedIn.value = false;
     await removePref();
+    // ignore: use_build_context_synchronously
     ctx.goNamed(AppRouteConsts.signIn);
   }
 
-  // @override
-  // void onReady() {
-  //   firebaseUser = Rx<User?>(_auth.currentUser);
-  //   firebaseUser.bindStream(_auth.userChanges());
-  //   ever(firebaseUser, _setInitialScreen);
-  // }
-
-  @override
-  void onInit() {
-    super.onInit();
-    firebaseUser = Rx<User?>(_auth.currentUser);
-    firebaseUser.bindStream(_auth.userChanges());
-    ever(firebaseUser, _setInitialScreen);
-  }
-
   void _setInitialScreen(User? user) {
-    print("_setInitialScreen ran");
     user == null ? isLoggedIn.value = false : isLoggedIn.value = true;
   }
 
-  Future<bool?> createUserWithEmailAndPass(String email, String password,
-      UserModel userModel, String uniqueId) async {
-    isLoading(true);
-    try {
-      await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+  Future<void> createUserWithEmailAndPass(BuildContext ctx) async {
+    if (signUpController.validEmail.value &&
+        signUpController.validPass.value &&
+        signUpController.validPhoneNo.value &&
+        signUpController.validUsername.value) {
+      try {
+        isLoading(true);
+        await _auth.createUserWithEmailAndPassword(
+            email: signUpController.email.text.trim(),
+            password: signUpController.password.text.trim());
+        final uniqueId = await nanoid(12);
 
-      // await _dbRef.collection('Users').add(userModel.toJson());
-      await _dbRef.collection('Users').doc(uniqueId).set(userModel.toJson());
-      if (kDebugMode) {
-        print("created and added!");
-      }
-      firebaseUser.value != null
-          ? isLoggedIn.value = true
-          : isLoggedIn.value = false;
+        final hashedPass = BCrypt.hashpw(
+            signUpController.password.text.trim(), BCrypt.gensalt());
 
-      Fluttertoast.showToast(
-          msg: "Successfully Created User!",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP_RIGHT,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0);
-      return true;
-    } on FirebaseAuthException catch (e) {
-      // ignore: unused_local_variable
-      final ex = SignUpWithEmailAndPasswordFailure.code(e.code);
-      if (kDebugMode) {
-        print('FIREBASE AUTH EXCEPTIONS - ${ex.message}');
+        UserModel data = UserModel(
+            email: signUpController.email.text.trim(),
+            username: signUpController.name.text.trim(),
+            phoneNo: signUpController.phoneNo.text.trim(),
+            hashPass: hashedPass,
+            id: uniqueId);
+
+        await _dbRef.collection('Users').doc(uniqueId).set(data.toJson());
+        if (kDebugMode) {
+          print("created and added!");
+        }
+        // firebaseUser.value != null
+        //     ? isLoggedIn.value = true
+        //     : isLoggedIn.value = false;
+
+        await customToast("Successfully Created User!", false);
+      } on FirebaseAuthException catch (e) {
+        // ignore: unused_local_variable
+        final ex = SignUpWithEmailAndPasswordFailure.code(e.code);
+        if (kDebugMode) {
+          print('FIREBASE AUTH EXCEPTIONS - ${ex.message}');
+        }
+        await customToast(ex.message, true);
+      } catch (_) {
+        isLoading(false);
+        const ex = SignUpWithEmailAndPasswordFailure();
+        if (kDebugMode) {
+          print("EXCEPTION - ${ex.message}");
+        }
+        await customToast(ex.message, true);
+        throw ex;
+      } finally {
+        isLoading(false);
+        ctx.pushNamed(AppRouteConsts.signIn);
       }
-      Fluttertoast.showToast(
-          msg: ex.message.toString(),
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP_RIGHT,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-    } catch (_) {
-      const ex = SignUpWithEmailAndPasswordFailure();
-      if (kDebugMode) {
-        print("EXCEPTION - ${ex.message}");
-      }
-      Fluttertoast.showToast(
-          msg: ex.message.toString(),
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP_RIGHT,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0);
-      throw ex;
-    } finally {
-      isLoading(false);
+    } else {
+      customToast("Please fill all the field!", true);
     }
-    return null;
   }
 
   // ignore: non_constant_identifier_names
-  Future<bool?> LoginUserWithEmailAndPass(
-      String email, String password, BuildContext ctx) async {
-    try {
-      isLoading(true);
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
+  Future<void> LoginUserWithEmailAndPass(BuildContext ctx) async {
+    if (signInController.validEmail.value && signInController.validPass.value) {
+      try {
+        isLoading(true);
+        await _auth.signInWithEmailAndPassword(
+            email: signInController.email.text.trim(),
+            password: signInController.password.text.trim());
+        await customToast("Successfully LoggedIn!", false);
 
-      await Fluttertoast.showToast(
-          msg: "Successfully LoggedIn!",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP_RIGHT,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0);
-      // ignore: use_build_context_synchronously
-      ctx.goNamed(AppRouteConsts.home);
-      isLoggedIn.value = true;
-      return true;
-    } on FirebaseAuthException catch (e) {
-      final ex = SignUpWithEmailAndPasswordFailure.code(e.code);
-      if (kDebugMode) {
-        print('FIREBASE AUTH EXCEPTIONS - ${ex.message}');
+        //empty fields
+        signInController.email.clear();
+        signInController.password.clear();
+
+        // ignore: use_build_context_synchronously
+        isLoggedIn.value = true;
+        // ignore: use_build_context_synchronously
+        ctx.goNamed(AppRouteConsts.home);
+      } on FirebaseAuthException catch (e) {
+        isLoading(false);
+        final ex = SignUpWithEmailAndPasswordFailure.code(e.code);
+        if (kDebugMode) {
+          print('FIREBASE AUTH EXCEPTIONS - ${ex.message}');
+        }
+        await customToast(ex.message, true);
+      } catch (_) {
+        isLoading(false);
+        const ex = SignUpWithEmailAndPasswordFailure();
+        if (kDebugMode) {
+          print("EXCEPTION - ${ex.message}");
+        }
+        await customToast(ex.message, true);
+        throw ex;
+      } finally {
+        isLoading(false);
       }
-      Fluttertoast.showToast(
-          msg: ex.message.toString(),
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP_RIGHT,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-    } catch (_) {
-      const ex = SignUpWithEmailAndPasswordFailure();
-      if (kDebugMode) {
-        print("EXCEPTION - ${ex.message}");
-      }
-      Fluttertoast.showToast(
-          msg: ex.message.toString(),
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP_RIGHT,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-      throw ex;
-    } finally {
-      isLoading(false);
+    } else {
+      customToast("Please Fill all The Filed", true);
     }
-    return null;
   }
 
   //signOut
   Future<void> logOutEmail(BuildContext ctx) async {
     try {
       isLoading(true);
-      await _auth.signOut().then((value) {
-        isLoggedIn(false);
-        ctx.goNamed(AppRouteConsts.signIn);
-      });
+      await _auth.signOut();
+      isLoggedIn(false);
+      // ignore: use_build_context_synchronously
+      ctx.goNamed(AppRouteConsts.signIn);
       // await removePref();
     } on FirebaseAuthException catch (e) {
-      Fluttertoast.showToast(
-          msg: e.message.toString(),
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP_RIGHT,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      isLoading(false);
+      await customToast(e.message.toString(), true);
     } finally {
       isLoading(false);
     }

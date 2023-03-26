@@ -131,44 +131,8 @@ class SignUpScreen extends StatelessWidget {
                                 style: TextButton.styleFrom(
                                     backgroundColor: Colors.black),
                                 onPressed: () async {
-                                  if (signUpController.validEmail.value &&
-                                      signUpController.validPass.value &&
-                                      signUpController.validPhoneNo.value &&
-                                      signUpController.validUsername.value) {
-                                    final uniqueId = await nanoid(12);
-                                    final hashedPass = BCrypt.hashpw(
-                                        signUpController.password.text.trim(),
-                                        BCrypt.gensalt());
-                                    authController
-                                        .createUserWithEmailAndPass(
-                                      signUpController.email.text.trim(),
-                                      signUpController.password.text.trim(),
-                                      UserModel(
-                                          email: signUpController.email.text
-                                              .trim(),
-                                          username:
-                                              signUpController.name.text.trim(),
-                                          phoneNo: signUpController.phoneNo.text
-                                              .trim(),
-                                          hashPass: hashedPass,
-                                          id: uniqueId),
-                                      uniqueId,
-                                    )
-                                        .then((data) {
-                                      if (data == null) {
-                                        if (kDebugMode) {
-                                          print("invalid form field");
-                                        }
-                                      } else {
-                                        signUpController.email.clear();
-                                        signUpController.name.clear();
-                                        signUpController.phoneNo.clear();
-                                        signUpController.password.clear();
-                                        context
-                                            .pushNamed(AppRouteConsts.signIn);
-                                      }
-                                    });
-                                  }
+                                  await authController
+                                      .createUserWithEmailAndPass(context);
                                 },
                                 child: const Text(
                                   "Signup",

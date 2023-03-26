@@ -98,18 +98,8 @@ class SignInScreen extends StatelessWidget {
                               style: TextButton.styleFrom(
                                   backgroundColor: ThemeColor.blackBasic),
                               onPressed: () async {
-                                if (signInController.validEmail.value &&
-                                    signInController.validPass.value) {
-                                  authController.LoginUserWithEmailAndPass(
-                                      signInController.email.text.trim(),
-                                      signInController.password.text.trim(),
-                                      context);
-                                  await Future.delayed(
-                                      const Duration(seconds: 1), () {
-                                    signInController.email.clear();
-                                    signInController.password.clear();
-                                  });
-                                }
+                                await authController.LoginUserWithEmailAndPass(
+                                    context);
                               },
                               child: const Text("Signin",
                                   style: TextStyle(
