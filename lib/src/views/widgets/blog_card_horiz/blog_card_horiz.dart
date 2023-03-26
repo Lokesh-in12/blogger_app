@@ -1,5 +1,6 @@
 import 'package:blogger_app/core/consts/responsive_breakpoints/responsive_breakpoints.dart';
 import 'package:blogger_app/core/routes/app_route_constants.dart';
+import 'package:blogger_app/core/themes/themes.dart';
 import 'package:blogger_app/core/utils/helpers/alert_dialogue.dart';
 import 'package:blogger_app/core/utils/helpers/time_formatter.dart';
 import 'package:blogger_app/src/models/blog_model/blog_model.dart';
@@ -72,7 +73,7 @@ class BlogCardsHoriz extends StatelessWidget {
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
-                                        Icon(
+                                        const Icon(
                                           CupertinoIcons.delete,
                                           size: 20,
                                         )
@@ -86,10 +87,11 @@ class BlogCardsHoriz extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       const CircleAvatar(
+                                        backgroundColor: ThemeColor.transparent,
                                           radius: 10,
                                           backgroundImage: NetworkImage(
                                               "https://images.unsplash.com/photo-1679381457571-ade79f46c61c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80")),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 7,
                                       ),
                                       SizedBox(
@@ -126,7 +128,7 @@ class BlogCardsHoriz extends StatelessWidget {
                                   "This is a sample description",
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 12),
+                              style: const TextStyle(fontSize: 12),
                             ),
                           ),
                           const SizedBox(

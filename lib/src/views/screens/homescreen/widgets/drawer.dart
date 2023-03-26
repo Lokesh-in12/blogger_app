@@ -1,13 +1,17 @@
 import 'package:blogger_app/core/consts/styles/app_style.dart';
 import 'package:blogger_app/core/routes/app_route_constants.dart';
+import 'package:blogger_app/core/themes/themes.dart';
 import 'package:blogger_app/src/controllers/auth_controller/auth_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class MyDrawer extends StatelessWidget {
-  MyDrawer({super.key});
+  BuildContext sC;
+  GlobalKey sKey;
+  MyDrawer({super.key, required this.sC, required this.sKey});
 
   final authcontroller = Get.find<AuthController>();
 
@@ -92,29 +96,38 @@ class MyDrawer extends StatelessWidget {
             const SizedBox(
               height: 25,
             ),
-            InkWell(
-              onTap: () async {
-                context.goNamed(AppRouteConsts.signIn);
-                if (authcontroller.googleAccount.value == null) {
-                  await authcontroller.logOutEmail(context);
-                } else {
-                  await authcontroller.googleLogout();
-                }
-                // ignore: use_build_context_synchronously
-              },
-              child: Row(
-                children: const [
-                  Icon(Icons.login_outlined),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    "Logout",
-                    style: ThemeText.drawerTitle,
-                  )
-                ],
-              ),
-            ),
+            Obx(() {
+              if (authcontroller.isLoading.value) {
+                return Center(
+                  child: LoadingAnimationWidget.fourRotatingDots(
+                      color: ThemeColor.blackBasic, size: 30),
+                );
+              }
+              return InkWell(
+                onTap: () async {
+                  context.pop();
+                  if (authcontroller.googleAccount.value == null) {
+                    await authcontroller.logOutEmail(sC);
+                  } else {
+                    await authcontroller.googleLogout(sC);
+                  }
+                  // context.goNamed(AppRouteConsts.signIn);
+                  // ignore: use_build_context_synchronously
+                },
+                child: Row(
+                  children: const [
+                    Icon(Icons.login_outlined),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "Logout",
+                      style: ThemeText.drawerTitle,
+                    )
+                  ],
+                ),
+              );
+            }),
           ],
         ),
       ),

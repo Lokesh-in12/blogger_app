@@ -71,7 +71,10 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           ],
         ),
-        drawer: MyDrawer(),
+        drawer: MyDrawer(
+          sC: context,
+          sKey: scaffoldKey,
+        ),
         body: Obx(() {
           final blogs = blogsController.AllBlogs;
           if (blogsController.AllBlogs.length == 0) {

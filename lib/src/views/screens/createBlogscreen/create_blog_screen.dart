@@ -26,7 +26,6 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     blogsController.title.clear();
     blogsController.desc.clear();
@@ -55,8 +54,9 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
           title: const Text("Create blog"),
           actions: [
             TextButton(
-                onPressed: () {
-                  blogsController.postBlog(context);
+                onPressed: () async {
+                  blogsController.postBlog(
+                      context, _formKey.currentState!.validate());
                 },
                 child: Text(
                   "Post",

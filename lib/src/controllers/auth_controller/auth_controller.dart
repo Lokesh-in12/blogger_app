@@ -19,6 +19,7 @@ class AuthController extends GetxController {
   late final Rx<User?> firebaseUser;
   RxBool isLoggedIn = false.obs;
   FirebaseAuth get auth => _auth;
+  RxBool isLoading = false.obs;
 
   Future<void> removePref() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -45,7 +46,7 @@ class AuthController extends GetxController {
       Fluttertoast.showToast(
           msg: e.message,
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.TOP_RIGHT,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.red,
           textColor: Colors.white,
@@ -53,10 +54,11 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> googleLogout() async {
+  Future<void> googleLogout(BuildContext ctx) async {
     googleAccount.value = await googleSignIn.signOut();
     isLoggedIn.value = false;
     await removePref();
+    ctx.goNamed(AppRouteConsts.signIn);
   }
 
   // @override
@@ -76,16 +78,12 @@ class AuthController extends GetxController {
 
   void _setInitialScreen(User? user) {
     print("_setInitialScreen ran");
-    // user == null ? isLoggedIn.value = false : isLoggedIn.value = true;
-    if(user == null){
-      isLoggedIn(false);
-    }else{
-      isLoggedIn(true);
-    }
+    user == null ? isLoggedIn.value = false : isLoggedIn.value = true;
   }
 
   Future<bool?> createUserWithEmailAndPass(String email, String password,
       UserModel userModel, String uniqueId) async {
+    isLoading(true);
     try {
       await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -102,7 +100,7 @@ class AuthController extends GetxController {
       Fluttertoast.showToast(
           msg: "Successfully Created User!",
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.TOP_RIGHT,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.green,
           textColor: Colors.white,
@@ -117,7 +115,7 @@ class AuthController extends GetxController {
       Fluttertoast.showToast(
           msg: ex.message.toString(),
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.TOP_RIGHT,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.red,
           textColor: Colors.white,
@@ -130,12 +128,14 @@ class AuthController extends GetxController {
       Fluttertoast.showToast(
           msg: ex.message.toString(),
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.TOP_RIGHT,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.green,
           textColor: Colors.white,
           fontSize: 16.0);
       throw ex;
+    } finally {
+      isLoading(false);
     }
     return null;
   }
@@ -144,12 +144,13 @@ class AuthController extends GetxController {
   Future<bool?> LoginUserWithEmailAndPass(
       String email, String password, BuildContext ctx) async {
     try {
+      isLoading(true);
       await _auth.signInWithEmailAndPassword(email: email, password: password);
 
       await Fluttertoast.showToast(
           msg: "Successfully LoggedIn!",
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.TOP_RIGHT,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.green,
           textColor: Colors.white,
@@ -166,7 +167,7 @@ class AuthController extends GetxController {
       Fluttertoast.showToast(
           msg: ex.message.toString(),
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.TOP_RIGHT,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.red,
           textColor: Colors.white,
@@ -179,20 +180,38 @@ class AuthController extends GetxController {
       Fluttertoast.showToast(
           msg: ex.message.toString(),
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.TOP_RIGHT,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
       throw ex;
+    } finally {
+      isLoading(false);
     }
     return null;
   }
 
   //signOut
-  Future<void> logOutEmail(BuildContext context) async {
-    await _auth.signOut();
-    await removePref();
-    isLoggedIn.value = false;
+  Future<void> logOutEmail(BuildContext ctx) async {
+    try {
+      isLoading(true);
+      await _auth.signOut().then((value) {
+        isLoggedIn(false);
+        ctx.goNamed(AppRouteConsts.signIn);
+      });
+      // await removePref();
+    } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(
+          msg: e.message.toString(),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP_RIGHT,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } finally {
+      isLoading(false);
+    }
   }
 }

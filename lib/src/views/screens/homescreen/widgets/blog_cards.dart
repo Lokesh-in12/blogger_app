@@ -74,6 +74,7 @@ class BlogCards extends StatelessWidget {
                                 e?.title.toString() ??
                                     "The principles of Design Thinking",
                                 maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                                 style: ThemeText.blogsForYou,
                               )),
                           const SizedBox(
