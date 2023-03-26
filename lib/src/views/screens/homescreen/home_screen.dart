@@ -39,15 +39,28 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
-          leading: IconButton(
-            onPressed: () => scaffoldKey.currentState!.isDrawerOpen
-                ? scaffoldKey.currentState!.closeDrawer()
-                : scaffoldKey.currentState!.openDrawer(),
-            icon: const Icon(
-              CupertinoIcons.circle_grid_3x3_fill,
-              size: 25,
+          leading: Padding(
+            padding: EdgeInsets.only(left: 15),
+                      child: InkWell(
+              onTap: () => scaffoldKey.currentState!.isDrawerOpen
+                  ? scaffoldKey.currentState!.closeDrawer()
+                  : scaffoldKey.currentState!.openDrawer(),
+              child: Image.asset(
+                'assets/images/blog_icon.png',
+                height: 5,
+              ),
             ),
           ),
+          leadingWidth: 43,
+          // leading: IconButton(
+          //   onPressed: () => scaffoldKey.currentState!.isDrawerOpen
+          //       ? scaffoldKey.currentState!.closeDrawer()
+          //       : scaffoldKey.currentState!.openDrawer(),
+          //   icon: const Icon(
+          //     CupertinoIcons.circle_grid_3x3_fill,
+          //     size: 25,
+          //   ),
+          // ),
           backgroundColor: Colors.white,
           foregroundColor: ThemeColor.blackBasic,
           elevation: 0,

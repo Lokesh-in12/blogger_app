@@ -3,8 +3,8 @@ import 'package:blogger_app/src/controllers/blogs_controller/blogs_controller.da
 import 'package:blogger_app/src/views/widgets/blog_card_horiz/blog_card_horiz.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
+// ignore: must_be_immutable
 class CategoryScreen extends StatefulWidget {
   String? category;
   CategoryScreen({super.key, this.category});
@@ -18,13 +18,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     asyncFunc(widget.category!);
   }
