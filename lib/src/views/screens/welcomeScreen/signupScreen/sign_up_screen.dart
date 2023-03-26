@@ -1,5 +1,6 @@
 import 'package:bcrypt/bcrypt.dart';
 import 'package:blogger_app/core/routes/app_route_constants.dart';
+import 'package:blogger_app/core/themes/themes.dart';
 import 'package:blogger_app/src/controllers/auth_controller/auth_controller.dart';
 import 'package:blogger_app/src/controllers/sign_up_controller/sign_up_controller.dart';
 import 'package:blogger_app/src/models/UserModel/user_model.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:nanoid/async.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -31,7 +33,7 @@ class SignUpScreen extends StatelessWidget {
                     "Let's Create Your Account!",
                     style: TextStyle(fontSize: 22),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Image.asset(
@@ -118,53 +120,26 @@ class SignUpScreen extends StatelessWidget {
                           const SizedBox(
                             height: 20,
                           ),
-                          TextButton(
-                              style: TextButton.styleFrom(
-                                  backgroundColor: Colors.black),
-                              onPressed: () async {
-                                if (signUpController.validEmail.value &&
-                                    signUpController.validPass.value &&
-                                    signUpController.validPhoneNo.value &&
-                                    signUpController.validUsername.value) {
-                                  final uniqueId = await nanoid(12);
-                                  final hashedPass = BCrypt.hashpw(
-                                      signUpController.password.text.trim(),
-                                      BCrypt.gensalt());
-                                  authController
-                                      .createUserWithEmailAndPass(
-                                    signUpController.email.text.trim(),
-                                    signUpController.password.text.trim(),
-                                    UserModel(
-                                        email:
-                                            signUpController.email.text.trim(),
-                                        username:
-                                            signUpController.name.text.trim(),
-                                        phoneNo: signUpController.phoneNo.text
-                                            .trim(),
-                                        hashPass: hashedPass,
-                                        id: uniqueId),
-                                    uniqueId,
-                                  )
-                                      .then((data) {
-                                    if (data == null) {
-                                      if (kDebugMode) {
-                                        print("invalid form field");
-                                      }
-                                    } else {
-                                      signUpController.email.clear();
-                                      signUpController.name.clear();
-                                      signUpController.phoneNo.clear();
-                                      signUpController.password.clear();
-                                      context.pushNamed(AppRouteConsts.signIn);
-                                    }
-                                  });
-                                }
-                              },
-                              child: const Text(
-                                "Signup",
-                                style: TextStyle(
-                                    fontSize: 17, color: Colors.white),
-                              )),
+                          Obx(() {
+                            if (authController.isLoading.value) {
+                              return Center(
+                                child: LoadingAnimationWidget.fourRotatingDots(
+                                    color: ThemeColor.blackBasic, size: 30),
+                              );
+                            }
+                            return TextButton(
+                                style: TextButton.styleFrom(
+                                    backgroundColor: Colors.black),
+                                onPressed: () async {
+                                  await authController
+                                      .createUserWithEmailAndPass(context);
+                                },
+                                child: const Text(
+                                  "Signup",
+                                  style: TextStyle(
+                                      fontSize: 17, color: Colors.white),
+                                ));
+                          }),
                           TextButton(
                               onPressed: () =>
                                   context.pushNamed(AppRouteConsts.signIn),

@@ -32,7 +32,7 @@ void DialogueBox(
                       TextButton(
                           style: TextButton.styleFrom(
                               backgroundColor: ThemeColor.blackBasic),
-                          onPressed: () {},
+                          onPressed: () => context.pop(),
                           child: Text(
                             "Done",
                             style: const TextStyle(color: ThemeColor.white),

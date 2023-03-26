@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
@@ -86,27 +87,25 @@ class SignInScreen extends StatelessWidget {
                           const SizedBox(
                             height: 20,
                           ),
-                          TextButton(
-                            style: TextButton.styleFrom(
-                                backgroundColor: ThemeColor.blackBasic),
-                            onPressed: () async {
-                              if (signInController.validEmail.value &&
-                                  signInController.validPass.value) {
-                                authController.LoginUserWithEmailAndPass(
-                                    signInController.email.text.trim(),
-                                    signInController.password.text.trim(),
+                          Obx(() {
+                            if (authController.isLoading.value) {
+                              return Center(
+                                child: LoadingAnimationWidget.fourRotatingDots(
+                                    color: ThemeColor.blackBasic, size: 30),
+                              );
+                            }
+                            return TextButton(
+                              style: TextButton.styleFrom(
+                                  backgroundColor: ThemeColor.blackBasic),
+                              onPressed: () async {
+                                await authController.LoginUserWithEmailAndPass(
                                     context);
-                                await Future.delayed(const Duration(seconds: 1),
-                                    () {
-                                  signInController.email.clear();
-                                  signInController.password.clear();
-                                });
-                              }
-                            },
-                            child: const Text("Signin",
-                                style: TextStyle(
-                                    fontSize: 17, color: ThemeColor.white)),
-                          ),
+                              },
+                              child: const Text("Signin",
+                                  style: TextStyle(
+                                      fontSize: 17, color: ThemeColor.white)),
+                            );
+                          }),
                           TextButton(
                             onPressed: () =>
                                 context.pushNamed(AppRouteConsts.signUp),

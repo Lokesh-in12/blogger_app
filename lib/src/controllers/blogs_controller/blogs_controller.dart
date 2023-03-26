@@ -1,13 +1,16 @@
 import 'dart:io';
 
 import 'package:blogger_app/core/routes/app_route_constants.dart';
+import 'package:blogger_app/core/themes/themes.dart';
 import 'package:blogger_app/src/controllers/auth_controller/auth_controller.dart';
 import 'package:blogger_app/src/models/blog_model/blog_model.dart';
+import 'package:blogger_app/src/views/widgets/toast/toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
@@ -106,39 +109,58 @@ class BlogsController extends GetxController {
     print("in uplodadTask");
   }
 
-  void postBlog(BuildContext ctx) async {
-    isLoading(true);
-    String uniqueId = await nanoid(7);
+  Future<void> postBlog(BuildContext ctx, bool isValidForm) async {
+    if (imgFile.value.path.isNotEmpty &&
+        isValidForm &&
+        category.value!.isNotEmpty) {
+      try {
+        isLoading(true);
+        String uniqueId = await nanoid(7);
 
-    String uniqueImageName = DateTime.now().millisecondsSinceEpoch.toString();
+        String uniqueImageName =
+            DateTime.now().millisecondsSinceEpoch.toString();
 
-    final UploadTask uploadTask =
-        storageReference.child(uniqueImageName).putFile(imgFile.value);
-    await uploadTask.then((TaskSnapshot taskSnapshot) {
-      taskSnapshot.ref.getDownloadURL().then((imgUrl) async {
-        await saveBlogToFireStore(
-            BlogModel(
-                authorId: _auth.currentUser?.uid ??
-                    authController.googleAccount.value!.id,
-                authorName: _auth.currentUser?.email!
-                        .split("@")[0]
-                        .toString() ??
-                    authController.googleAccount.value!.displayName.toString(),
-                category: category.toString(),
-                images: imgUrl.toString(),
-                title: title.text.trim().toString(),
-                desc: desc.text.trim().toString(),
-                postTime: DateTime.now().toString(),
-                postDate: DateTime.now().toLocal().toString(),
-                id: uniqueId),
-            uniqueId);
-        isLoading(false);
-        ctx.goNamed(AppRouteConsts.profile, params: {
-          "id": _auth.currentUser?.uid.toString() ??
-              authController.googleAccount.value!.id
+        UploadTask uploadTask =
+            storageReference.child(uniqueImageName).putFile(imgFile.value);
+        await uploadTask.then((TaskSnapshot taskSnapshot) {
+          taskSnapshot.ref.getDownloadURL().then((imgUrl) async {
+            await saveBlogToFireStore(
+                BlogModel(
+                    authorId: _auth.currentUser?.uid ??
+                        authController.googleAccount.value!.id,
+                    authorName:
+                        _auth.currentUser?.email!.split("@")[0].toString() ??
+                            authController.googleAccount.value!.displayName
+                                .toString(),
+                    category: category.toString(),
+                    images: imgUrl.toString(),
+                    title: title.text.trim().toString(),
+                    desc: desc.text.trim().toString(),
+                    postTime: DateTime.now().toString(),
+                    postDate: DateTime.now().toLocal().toString(),
+                    id: uniqueId),
+                uniqueId);
+            isLoading(false);
+            // ignore: use_build_context_synchronously
+            ctx.goNamed(AppRouteConsts.profile, params: {
+              "id": _auth.currentUser?.uid.toString() ??
+                  authController.googleAccount.value!.id
+            });
+          });
         });
-      });
-    });
+      } catch (e) {
+        print("error in post Blogs => $e");
+      }
+    } else {
+      await Fluttertoast.showToast(
+          msg: "Please fill all the fields!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP_LEFT,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.yellowAccent[700],
+          textColor: ThemeColor.blackBasic,
+          fontSize: 16.0);
+    }
   }
 
   void removeUploadedImg() {
