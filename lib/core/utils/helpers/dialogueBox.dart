@@ -1,4 +1,5 @@
-import 'package:blogger_app/core/themes/themes.dart';
+import 'package:blogger_app/core/themes/colors.dart';
+
 import 'package:blogger_app/src/views/screens/createBlogscreen/widgets/categories_list/category_list.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -23,19 +24,19 @@ void DialogueBox(
                     children: [
                       TextButton(
                           style: TextButton.styleFrom(
-                              backgroundColor: ThemeColor.blackBasic),
+                              backgroundColor: AppColors.blackBasic),
                           onPressed: () => context.pop(),
                           child: Text(
                             "Cancel",
-                            style: const TextStyle(color: ThemeColor.white),
+                            style: const TextStyle(color: AppColors.white),
                           )),
                       TextButton(
                           style: TextButton.styleFrom(
-                              backgroundColor: ThemeColor.blackBasic),
+                              backgroundColor: AppColors.blackBasic),
                           onPressed: () => context.pop(),
                           child: Text(
                             "Done",
-                            style: const TextStyle(color: ThemeColor.white),
+                            style: const TextStyle(color: AppColors.white),
                           )),
                     ],
                   )

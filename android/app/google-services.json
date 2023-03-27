@@ -1,37 +1,37 @@
 {
   "project_info": {
-    "project_number": "469516346001",
-    "project_id": "bloggerapp-fc897",
-    "storage_bucket": "bloggerapp-fc897.appspot.com"
+    "project_number": "522803119987",
+    "project_id": "blogappbackup",
+    "storage_bucket": "blogappbackup.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:469516346001:android:428a93fa138bc03921d530",
+        "mobilesdk_app_id": "1:522803119987:android:a07c683db8cca4e2aba706",
         "android_client_info": {
           "package_name": "com.example.blogger_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "469516346001-h365scra2e1jga7johiceen3cgko8div.apps.googleusercontent.com",
+          "client_id": "522803119987-rbpqq8po14hg8u0jnmc9ruqq4ef7b34p.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDXSahik5sgVx4DWGOgUrOVWaWGiT4SJAY"
+          "current_key": "AIzaSyAsJ_3FrywstKv6cDB8upZwP_Tu_9LyZVs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "469516346001-3cp8a6kiup91f0pjler3to72oodd9316.apps.googleusercontent.com",
+              "client_id": "522803119987-im02l6hu7e9euv6epe1hjk52j88ppt5e.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "469516346001-6u842tco8jhl878olkag8eoj5p0t2qnl.apps.googleusercontent.com",
+              "client_id": "522803119987-vn4rmqbbb70n32cg4h7kmhqe3t2j5tra.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.example.bloggerApp"

@@ -1,4 +1,4 @@
-import 'package:blogger_app/core/themes/themes.dart';
+
 import 'package:blogger_app/src/controllers/blogs_controller/blogs_controller.dart';
 import 'package:blogger_app/src/views/screens/createBlogscreen/widgets/categories_list/category_list.dart';
 import 'package:flutter/material.dart';

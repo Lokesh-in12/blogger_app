@@ -1,4 +1,5 @@
 import 'package:blogger_app/core/routes/app_route_constants.dart';
+import 'package:blogger_app/core/themes/colors.dart';
 import 'package:blogger_app/src/controllers/auth_controller/auth_controller.dart';
 import 'package:blogger_app/src/controllers/blogs_controller/blogs_controller.dart';
 import 'package:blogger_app/src/views/screens/profilescreen/widgets/followers_info.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:blogger_app/core/themes/themes.dart';
+
 import 'package:blogger_app/core/consts/styles/app_style.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:blogger_app/src/views/screens/homescreen/widgets/blog_cards.dart';
@@ -43,9 +44,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
         appBar: AppBar(
-          backgroundColor: ThemeColor.white,
+          backgroundColor: AppColors.white,
           elevation: 0.0,
-          foregroundColor: ThemeColor.blackBasic,
+          foregroundColor: AppColors.blackBasic,
           title: const Text("My Profile"),
           actions: [
             IconButton(
@@ -55,7 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Container(
-            color: ThemeColor.white,
+            color: AppColors.white,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Column(
@@ -173,7 +174,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         if (blogsController.isLoading.value) {
                           return Center(
                             child: LoadingAnimationWidget.fourRotatingDots(
-                                color: ThemeColor.blackBasic, size: 40),
+                                color: AppColors.blackBasic, size: 40),
                           );
                         }
                         return ListView.builder(
@@ -196,7 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: ThemeColor.blackBasic,
+          backgroundColor: AppColors.blackBasic,
           onPressed: () =>
               context.pushNamed(AppRouteConsts.createBlog, params: {
             "id":

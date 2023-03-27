@@ -1,4 +1,4 @@
-import 'package:blogger_app/core/themes/themes.dart';
+import 'package:blogger_app/core/themes/colors.dart';
 import 'package:blogger_app/src/controllers/blogs_controller/blogs_controller.dart';
 import 'package:blogger_app/src/views/widgets/blog_card_horiz/blog_card_horiz.dart';
 import 'package:flutter/material.dart';
@@ -38,8 +38,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
         return Scaffold(
           appBar: AppBar(
             title: Text(widget.category!),
-            backgroundColor: ThemeColor.white,
-            foregroundColor: ThemeColor.blackBasic,
+            backgroundColor: AppColors.white,
+            foregroundColor: AppColors.blackBasic,
             elevation: 0.0,
           ),
           body: SafeArea(
@@ -47,11 +47,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
         );
       }
       return Scaffold(
-        backgroundColor: ThemeColor.white,
+        backgroundColor: AppColors.white,
         appBar: AppBar(
           title: Text(widget.category!),
-          foregroundColor: ThemeColor.blackBasic,
-          backgroundColor: ThemeColor.white,
+          foregroundColor: AppColors.blackBasic,
+          backgroundColor: AppColors.white,
           elevation: 0.0,
         ),
         body: Padding(

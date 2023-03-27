@@ -14,6 +14,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nanoid/async.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends GetxController {
   //signInController
@@ -65,7 +66,7 @@ class AuthController extends GetxController {
   Future<void> googleLogout(BuildContext ctx) async {
     googleAccount.value = await googleSignIn.signOut();
     isLoggedIn.value = false;
-    await removePref();
+    // await removePref();
     // ignore: use_build_context_synchronously
     ctx.goNamed(AppRouteConsts.signIn);
   }
@@ -100,9 +101,6 @@ class AuthController extends GetxController {
         if (kDebugMode) {
           print("created and added!");
         }
-        // firebaseUser.value != null
-        //     ? isLoggedIn.value = true
-        //     : isLoggedIn.value = false;
 
         await customToast("Successfully Created User!", false);
       } on FirebaseAuthException catch (e) {

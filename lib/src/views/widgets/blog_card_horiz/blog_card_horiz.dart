@@ -1,6 +1,6 @@
-import 'package:blogger_app/core/consts/responsive_breakpoints/responsive_breakpoints.dart';
+import 'package:blogger_app/core/consts/responsive_breakpoints.dart';
 import 'package:blogger_app/core/routes/app_route_constants.dart';
-import 'package:blogger_app/core/themes/themes.dart';
+import 'package:blogger_app/core/themes/colors.dart';
 import 'package:blogger_app/core/utils/helpers/alert_dialogue.dart';
 import 'package:blogger_app/core/utils/helpers/time_formatter.dart';
 import 'package:blogger_app/src/models/blog_model/blog_model.dart';
@@ -9,7 +9,7 @@ import 'package:blogger_app/core/consts/styles/app_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:blogger_app/core/consts/constraints/constraints.dart';
+import 'package:blogger_app/core/consts/constraints.dart';
 
 // ignore: must_be_immutable
 class BlogCardsHoriz extends StatelessWidget {
@@ -63,17 +63,15 @@ class BlogCardsHoriz extends StatelessWidget {
                           user!
                               ? InkWell(
                                   onTap: () async {
-                                    print("in here");
                                     await ShowCustomAlert(context,
                                         "Are you sure?", e!.id.toString());
-                                    print("in hsdvdsve");
                                   },
                                   child: SizedBox(
                                     width: 230,
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        const Icon(
+                                      children: const [
+                                        Icon(
                                           CupertinoIcons.delete,
                                           size: 20,
                                         )
@@ -87,7 +85,8 @@ class BlogCardsHoriz extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       const CircleAvatar(
-                                        backgroundColor: ThemeColor.transparent,
+                                          backgroundColor:
+                                              AppColors.transparent,
                                           radius: 10,
                                           backgroundImage: NetworkImage(
                                               "https://images.unsplash.com/photo-1679381457571-ade79f46c61c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80")),

@@ -1,8 +1,9 @@
+import 'package:blogger_app/core/themes/colors.dart';
 import 'package:blogger_app/core/utils/helpers/dialogueBox.dart';
 import 'package:blogger_app/src/controllers/blogs_controller/blogs_controller.dart';
 import 'package:blogger_app/src/views/widgets/category/category_card.dart';
 import 'package:flutter/material.dart';
-import 'package:blogger_app/core/themes/themes.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
@@ -38,18 +39,18 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
     return Obx(() {
       if (blogsController.isLoading.value) {
         return Scaffold(
-          backgroundColor: ThemeColor.white,
+          backgroundColor: AppColors.white,
           body: Center(
             child: LoadingAnimationWidget.fourRotatingDots(
-                color: ThemeColor.blackBasic, size: 40),
+                color: AppColors.blackBasic, size: 40),
           ),
         );
       }
       return Scaffold(
-        backgroundColor: ThemeColor.white,
+        backgroundColor: AppColors.white,
         appBar: AppBar(
-          backgroundColor: ThemeColor.white,
-          foregroundColor: ThemeColor.blackBasic,
+          backgroundColor: AppColors.white,
+          foregroundColor: AppColors.blackBasic,
           elevation: 0.0,
           title: const Text("Create blog"),
           actions: [
@@ -61,7 +62,7 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
                 child: Text(
                   "Post",
                   style: const TextStyle(
-                      fontSize: 20, color: ThemeColor.blackBasic),
+                      fontSize: 20, color: AppColors.blackBasic),
                 ))
           ],
         ),
@@ -70,7 +71,7 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
             padding: const EdgeInsets.all(10.0),
             child: Container(
               width: double.infinity,
-              color: ThemeColor.white,
+              color: AppColors.white,
               child: Column(
                 children: [
                   Obx(() {
@@ -172,13 +173,13 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
                     if (blogsController.category.value!.isEmpty) {
                       return TextButton(
                           style: TextButton.styleFrom(
-                              backgroundColor: ThemeColor.blackBasic),
+                              backgroundColor: AppColors.blackBasic),
                           onPressed: () {
                             DialogueBox(context, "Select Category");
                           },
                           child: const Text(
                             "Choose Category",
-                            style: TextStyle(color: ThemeColor.white),
+                            style: TextStyle(color: AppColors.white),
                           ));
                     }
                     return CategoryCard(
@@ -197,7 +198,7 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: ThemeColor.blackBasic,
+          backgroundColor: AppColors.blackBasic,
           onPressed: () {},
           child: const Icon(Icons.wb_incandescent_sharp),
         ),

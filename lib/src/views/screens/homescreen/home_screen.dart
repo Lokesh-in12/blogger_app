@@ -1,6 +1,7 @@
 import 'package:blogger_app/core/consts/styles/app_style.dart';
 import 'package:blogger_app/core/routes/app_route_constants.dart';
-import 'package:blogger_app/core/themes/themes.dart';
+import 'package:blogger_app/core/themes/colors.dart';
+
 import 'package:blogger_app/src/controllers/auth_controller/auth_controller.dart';
 import 'package:blogger_app/src/controllers/blogs_controller/blogs_controller.dart';
 import 'package:blogger_app/src/views/screens/homescreen/widgets/blog_cards.dart';
@@ -41,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           leading: Padding(
             padding: EdgeInsets.only(left: 15),
-                      child: InkWell(
+            child: InkWell(
               onTap: () => scaffoldKey.currentState!.isDrawerOpen
                   ? scaffoldKey.currentState!.closeDrawer()
                   : scaffoldKey.currentState!.openDrawer(),
@@ -62,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
           //   ),
           // ),
           backgroundColor: Colors.white,
-          foregroundColor: ThemeColor.blackBasic,
+          foregroundColor: AppColors.blackBasic,
           elevation: 0,
           actions: [
             Padding(
@@ -94,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
             return Scaffold(
               body: Center(
                   child: LoadingAnimationWidget.fourRotatingDots(
-                      color: ThemeColor.blackBasic, size: 40)),
+                      color: AppColors.blackBasic, size: 40)),
             );
           }
           return Padding(
@@ -112,9 +113,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               'Blogs for you',
-                              style: ThemeText.Heading2,
+                              style: Theme.of(context).textTheme.displayLarge,
                             ),
                             //blog cards
                             SizedBox(
@@ -142,9 +143,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
+                                  Text(
                                     "Let's Pick one",
-                                    style: ThemeText.heading3,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium,
                                   ),
                                   const SizedBox(
                                     height: 15,
@@ -209,9 +212,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
+                                  Text(
                                     "All Blogs",
-                                    style: ThemeText.heading3,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium,
                                   ),
                                   const SizedBox(
                                     height: 15,
@@ -243,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         }),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: ThemeColor.blackBasic,
+          backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
           onPressed: () =>
               context.pushNamed(AppRouteConsts.createBlog, params: {
             "id":

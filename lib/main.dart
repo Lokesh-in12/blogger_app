@@ -1,5 +1,6 @@
-import 'package:blogger_app/core/consts/injections/injections.dart';
+import 'package:blogger_app/core/consts/injections.dart';
 import 'package:blogger_app/core/routes/app_route_config.dart';
+import 'package:blogger_app/core/themes/app_theme.dart';
 import 'package:blogger_app/firebase_options.dart';
 import 'package:blogger_app/src/controllers/auth_controller/auth_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,10 +26,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       scrollBehavior: MyCustomScrollBehaviour(),
       title: 'Flutter Demo',
-      theme: ThemeData(
-        textTheme: GoogleFonts.montserratTextTheme(),
-        primarySwatch: Colors.blue,
-      ),
+      theme: AppThemes.lightTheme,
       debugShowCheckedModeBanner: false,
       routerConfig: MyAppRouterConfig.returnRouter(
         authController.isLoggedIn.value,

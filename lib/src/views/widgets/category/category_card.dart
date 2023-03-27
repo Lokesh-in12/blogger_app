@@ -30,7 +30,7 @@ class CategoryCard extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text(title.toString()),
+                        Text(title.toString(),style: Theme.of(context).textTheme.titleSmall,),
                         InkWell(
                             onTap: () => blogsController.category.value = "",
                             child: const Icon(Icons.remove))
@@ -40,6 +40,7 @@ class CategoryCard extends StatelessWidget {
                 : Center(
                     child: Text(
                       title.toString(),
+                      style: Theme.of(context).textTheme.titleSmall,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),

@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:blogger_app/core/routes/app_route_constants.dart';
-import 'package:blogger_app/core/themes/themes.dart';
+import 'package:blogger_app/core/themes/colors.dart';
+
 import 'package:blogger_app/src/controllers/auth_controller/auth_controller.dart';
 import 'package:blogger_app/src/models/blog_model/blog_model.dart';
-import 'package:blogger_app/src/views/widgets/toast/toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -15,7 +15,6 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nanoid/async.dart';
-import 'package:intl/intl.dart';
 
 class BlogsController extends GetxController {
   final ImagePicker _picker = ImagePicker();
@@ -55,7 +54,9 @@ class BlogsController extends GetxController {
       await fetchAllBlogs();
       await getUsersBlog();
     } catch (e) {
-      print("err in removeBlog =>> $e");
+      if (kDebugMode) {
+        print("err in removeBlog =>> $e");
+      }
     } finally {
       isLoading(false);
     }
@@ -63,9 +64,10 @@ class BlogsController extends GetxController {
 
   Future<void> fetchSelectedCategory(String category) async {
     Category.value =
-        await AllBlogs.where((element) => element.category == category)
-            .toList();
-    print(Category.length);
+        AllBlogs.where((element) => element.category == category).toList();
+    if (kDebugMode) {
+      print(Category.length);
+    }
   }
 
   Future<void> handleSingleBlog(String id) async {
@@ -103,10 +105,6 @@ class BlogsController extends GetxController {
 
   void setCategory(val) {
     category.value = val;
-  }
-
-  void uplodadTask() {
-    print("in uplodadTask");
   }
 
   Future<void> postBlog(BuildContext ctx, bool isValidForm) async {
@@ -149,7 +147,9 @@ class BlogsController extends GetxController {
           });
         });
       } catch (e) {
-        print("error in post Blogs => $e");
+        if (kDebugMode) {
+          print("error in post Blogs => $e");
+        }
       }
     } else {
       await Fluttertoast.showToast(
@@ -158,7 +158,7 @@ class BlogsController extends GetxController {
           gravity: ToastGravity.TOP_LEFT,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.yellowAccent[700],
-          textColor: ThemeColor.blackBasic,
+          textColor: AppColors.blackBasic,
           fontSize: 16.0);
     }
   }
@@ -182,7 +182,9 @@ class BlogsController extends GetxController {
         }
       });
     } catch (e) {
-      print("error in pickImg catch =>>> $e");
+      if (kDebugMode) {
+        print("error in pickImg catch =>>> $e");
+      }
     }
   }
 }

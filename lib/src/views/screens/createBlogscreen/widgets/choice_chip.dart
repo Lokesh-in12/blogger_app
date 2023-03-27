@@ -1,4 +1,5 @@
-import 'package:blogger_app/core/themes/themes.dart';
+import 'package:blogger_app/core/themes/colors.dart';
+
 import 'package:blogger_app/src/controllers/blogs_controller/blogs_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -15,8 +16,8 @@ class CategoryChoiceChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChoiceChip(
-      selectedColor: ThemeColor.selectedColor,
-      backgroundColor: ThemeColor.lightGrey,
+      selectedColor: AppColors.selectedColor,
+      backgroundColor: AppColors.lightGrey,
       label: Text(
         category.toString(),
         style: const TextStyle(fontSize: 15),

@@ -1,6 +1,7 @@
-import 'package:blogger_app/core/consts/responsive_breakpoints/responsive_breakpoints.dart';
+import 'package:blogger_app/core/consts/responsive_breakpoints.dart';
 import 'package:blogger_app/core/consts/styles/app_style.dart';
-import 'package:blogger_app/core/themes/themes.dart';
+import 'package:blogger_app/core/themes/colors.dart';
+
 import 'package:blogger_app/src/controllers/blogs_controller/blogs_controller.dart';
 import 'package:blogger_app/src/views/widgets/author_info/author_info.dart';
 import 'package:flutter/cupertino.dart';
@@ -78,7 +79,7 @@ class _SingleBlogPageState extends State<SingleBlogPage> {
                                 icon: const Icon(
                                   CupertinoIcons.back,
                                   size: 40,
-                                  color: ThemeColor.white,
+                                  color: AppColors.white,
                                 ),
                                 label: const Text("")),
                           ),

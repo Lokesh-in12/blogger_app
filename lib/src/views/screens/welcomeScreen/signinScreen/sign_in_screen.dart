@@ -1,6 +1,7 @@
 import 'package:blogger_app/core/consts/styles/app_style.dart';
 import 'package:blogger_app/core/routes/app_route_constants.dart';
-import 'package:blogger_app/core/themes/themes.dart';
+import 'package:blogger_app/core/themes/colors.dart';
+
 import 'package:blogger_app/src/controllers/auth_controller/auth_controller.dart';
 import 'package:blogger_app/src/controllers/blogs_controller/blogs_controller.dart';
 import 'package:blogger_app/src/controllers/sign_in_controller/sign_in_controller.dart';
@@ -91,19 +92,19 @@ class SignInScreen extends StatelessWidget {
                             if (authController.isLoading.value) {
                               return Center(
                                 child: LoadingAnimationWidget.fourRotatingDots(
-                                    color: ThemeColor.blackBasic, size: 30),
+                                    color: AppColors.blackBasic, size: 30),
                               );
                             }
                             return TextButton(
                               style: TextButton.styleFrom(
-                                  backgroundColor: ThemeColor.blackBasic),
+                                  backgroundColor: AppColors.blackBasic),
                               onPressed: () async {
                                 await authController.LoginUserWithEmailAndPass(
                                     context);
                               },
                               child: const Text("Signin",
                                   style: TextStyle(
-                                      fontSize: 17, color: ThemeColor.white)),
+                                      fontSize: 17, color: AppColors.white)),
                             );
                           }),
                           TextButton(
@@ -113,7 +114,7 @@ class SignInScreen extends StatelessWidget {
                                 "Don't have an account? Let's create one!",
                                 style: TextStyle(
                                     fontSize: 15,
-                                    color: ThemeColor.blackBasic)),
+                                    color: AppColors.blackBasic)),
                           ),
                           const Divider(
                             height: 20,

@@ -55,7 +55,7 @@ class BlogCards extends StatelessWidget {
                         e?.category.toString() ?? "No Category",
                         maxLines: 1,
                         overflow: TextOverflow.clip,
-                        style: ThemeText.cardCategoryBlog,
+                        style: Theme.of(context).textTheme.labelSmall,
                       )),
                     ),
                   ),
@@ -75,7 +75,7 @@ class BlogCards extends StatelessWidget {
                                     "The principles of Design Thinking",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: ThemeText.blogsForYou,
+                                style: Theme.of(context).textTheme.displaySmall,
                               )),
                           const SizedBox(
                             height: 10,
@@ -99,13 +99,13 @@ class BlogCards extends StatelessWidget {
                                 children: [
                                   Text(
                                     e?.authorName ?? "Ava Martinez",
-                                    style: ThemeText.blogs_author,
+                                    style: Theme.of(context).textTheme.bodySmall,
                                   ),
                                   Text(
                                     getPostTimeFormatted(
                                             e!.postTime.toString()) ??
                                         "",
-                                    style: ThemeText.blogs_author,
+                                    style: Theme.of(context).textTheme.bodySmall,
                                   ),
                                 ],
                               )
